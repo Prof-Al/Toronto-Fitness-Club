@@ -108,8 +108,8 @@ class AddSubscriptionSerializer(serializers.ModelSerializer):
         fields = ['subscription', 'card_info']
 
     def validate_subscription(self, value):
-        if value not in list(Subscription.objects.values_list('duration', flat=True)):
-            raise serializers.ValidationError(f"Invalid subscription name. Must be one of these [{list(Subscription.objects.values_list('duration', flat=True))}]")
+        if value not in list(Subscription.objects.values_list('name', flat=True)):
+            raise serializers.ValidationError(f"Invalid subscription name. Must be one of these [{list(Subscription.objects.values_list('name', flat=True))}]")
         return value
 
     def validate_card_info(self, value):
@@ -125,27 +125,29 @@ class AddSubscriptionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         user = self.context['request'].user
-        instance.subscription = Subscription.objects.get(duration=validated_data["subscription"])
+        instance.subscription = Subscription.objects.get(name=validated_data["subscription"])
         instance.is_subscribed = True
 
-        if instance.next_payment_date != None:
-            today = instance.next_payment_date
-        else:
-            today = datetime.today()
-        if validated_data["subscription"] == "Monthly":
-            instance.next_payment_date = today + relativedelta(months=+1)
-        elif validated_data["subscription"] == "Weekly":
-            instance.next_payment_date = today + relativedelta(weeks=+1)
-        elif validated_data["subscription"] == "Bi-weekly":
-            instance.next_payment_date = today + relativedelta(weeks=+2)
-        elif validated_data["subscription"] == "Yearly":
-            instance.next_payment_date = today + relativedelta(years=+1)
         instance.card_info = validated_data["card_info"]
+        # if user has an active subscription
+        if instance.next_payment_date != None:
+            payment_day = instance.next_payment_date
+        else:
+            payment_day = datetime.today()
 
-        current_payment = PaymentTransaction(user=user,
-                                             amount=instance.subscription.amount,
-                                             card_info=validated_data["card_info"])
-        current_payment.save()
+            if instance.subscription.duration == "Monthly":
+                instance.next_payment_date = payment_day + relativedelta(months=+1)
+            elif instance.subscription.duration == "Weekly":
+                instance.next_payment_date = payment_day + relativedelta(weeks=+1)
+            elif instance.subscription.duration == "Bi-weekly":
+                instance.next_payment_date = payment_day + relativedelta(weeks=+2)
+            elif instance.subscription.duration == "Yearly":
+                instance.next_payment_date = payment_day + relativedelta(years=+1)
+
+            current_payment = PaymentTransaction(user=user,
+                                                 amount=instance.subscription.amount,
+                                                 card_info=validated_data["card_info"])
+            current_payment.save()
 
         instance.save()
 
@@ -179,8 +181,8 @@ class UpdateSubscriptionSerializer(serializers.ModelSerializer):
         fields = ['subscription']
 
     def validate_subscription(self, value):
-        if value not in list(Subscription.objects.values_list('duration', flat=True)):
-            raise serializers.ValidationError(f"Invalid subscription name. Must be one of these [{list(Subscription.objects.values_list('duration', flat=True))}]")
+        if value not in list(Subscription.objects.values_list('name', flat=True)):
+            raise serializers.ValidationError(f"Invalid subscription name. Must be one of these [{list(Subscription.objects.values_list('name', flat=True))}]")
         return value
 
     def validate(self, attrs):
@@ -191,22 +193,24 @@ class UpdateSubscriptionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         user = self.context['request'].user
-        instance.subscription = Subscription.objects.get(duration=validated_data["subscription"])
-        current_next_payment = instance.next_payment_date
+        instance.subscription = Subscription.objects.get(name=validated_data["subscription"])
 
-        if validated_data["subscription"] == "Monthly":
-            instance.next_payment_date = current_next_payment + relativedelta(months=+1)
-        elif validated_data["subscription"] == "Weekly":
-            instance.next_payment_date = current_next_payment + relativedelta(weeks=+1)
-        elif validated_data["subscription"] == "Bi-weekly":
-            instance.next_payment_date = current_next_payment + relativedelta(weeks=+2)
-        elif validated_data["subscription"] == "Yearly":
-            instance.next_payment_date = current_next_payment + relativedelta(years=+1)
+        # don't think this is necessary as updating a subscription should only trigger a payment on the next_payment_date
+        # aka with process_payments.py
 
-        current_payment = PaymentTransaction(user=user,
-                                             amount=instance.subscription.amount,
-                                             card_info=instance.card_info)
-        current_payment.save()
+        # if instance.subscription.duration == "Monthly":
+        #     instance.next_payment_date = current_next_payment + relativedelta(months=+1)
+        # elif instance.subscription.duration == "Weekly":
+        #     instance.next_payment_date = current_next_payment + relativedelta(weeks=+1)
+        # elif instance.subscription.duration == "Bi-weekly":
+        #     instance.next_payment_date = current_next_payment + relativedelta(weeks=+2)
+        # elif instance.subscription.duration == "Yearly":
+        #     instance.next_payment_date = current_next_payment + relativedelta(years=+1)
+        #
+        # current_payment = PaymentTransaction(user=user,
+        #                                      amount=instance.subscription.amount,
+        #                                      card_info=instance.card_info)
+        # current_payment.save()
 
         instance.save()
 
