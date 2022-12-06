@@ -10,8 +10,9 @@ from django.shortcuts import get_object_or_404
 from .models import CustomUser, PaymentTransaction, Subscription
 from .serializers import RegistrationSerializer, ChangePasswordSerializer, UpdateUserSerializer, \
     AddSubscriptionSerializer, UpdateSubscriptionSerializer, CancelSubscriptionSerializer, PaymentTransactionSerializer
-from .serializers import  UpdateCardInfoSerializer
+from .serializers import UpdateCardInfoSerializer
 from PB.paginations import CustomPagination
+
 
 class RegistrationView(APIView):
 
@@ -30,7 +31,6 @@ class LogoutView(APIView):
 
 
 class ChangePasswordView(UpdateAPIView):
-
     queryset = get_user_model().objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
@@ -41,7 +41,6 @@ class ChangePasswordView(UpdateAPIView):
 
 
 class UpdateProfileView(UpdateAPIView):
-
     queryset = get_user_model().objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
@@ -55,7 +54,6 @@ class UpdateProfileView(UpdateAPIView):
 
 
 class AddSubscriptionView(UpdateAPIView):
-
     queryset = get_user_model().objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = AddSubscriptionSerializer
@@ -66,7 +64,6 @@ class AddSubscriptionView(UpdateAPIView):
 
 
 class UpdateCardInfoView(UpdateAPIView):
-
     queryset = get_user_model().objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateCardInfoSerializer
@@ -75,8 +72,8 @@ class UpdateCardInfoView(UpdateAPIView):
         user = get_object_or_404(CustomUser, id=self.request.user.id)
         return user
 
-class UpdateSubscriptionView(UpdateAPIView):
 
+class UpdateSubscriptionView(UpdateAPIView):
     queryset = get_user_model().objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateSubscriptionSerializer
@@ -85,8 +82,8 @@ class UpdateSubscriptionView(UpdateAPIView):
         user = get_object_or_404(CustomUser, id=self.request.user.id)
         return user
 
-class CancelSubscriptionView(UpdateAPIView):
 
+class CancelSubscriptionView(UpdateAPIView):
     queryset = get_user_model().objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = CancelSubscriptionSerializer
@@ -105,21 +102,19 @@ class ListPaymentHistoryView(ListAPIView):
         request = self.request
         user = request.user
         payment_history = list(PaymentTransaction.objects.filter(user=user).values())
-        amount = None
+        print(payment_history)
+        amount = user.subscription.amount
         plan = None
         if user.is_subscribed:
             if str(user.subscription.duration) == "Monthly":
-                amount = Subscription.objects.filter(duration="Monthly").values("amount")[0].get("amount")
                 plan = "Monthly"
             elif str(user.subscription.duration) == "Weekly":
                 plan = "Weekly"
-                amount = Subscription.objects.filter(duration="Weekly").values("amount")[0].get("amount")
             elif str(user.subscription.duration) == "Bi-weekly":
                 plan = "Bi-weekly"
-                amount = Subscription.objects.filter(duration="Bi-weekly").values("amount")[0].get("amount")
             elif str(user.subscription.duration) == "Yearly":
                 plan = "Yearly"
-                amount = Subscription.objects.filter(duration="Yearly").values("amount")[0].get("amount")
+
         if amount is not None:
             payment_history.append({"id": "0",
                                     "userid": user.id,
