@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Main from './Components/Main/Main';
 import "@progress/kendo-theme-default/dist/all.css";
-import PickDateOfClass  from  './Components/Classes/Canlendar'
+import Classes  from  './Components/Classes/index'
 
 function App() {
   return (
@@ -11,6 +11,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Main/>} />  
+        <Route path="/Classes" element={<Classes/>} />  
       </Routes>
     </Router>
   );

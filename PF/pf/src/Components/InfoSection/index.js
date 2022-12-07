@@ -24,6 +24,7 @@ const InfoSection = ({ lightBg,
     darkText,
     description,
     buttonLabel,
+    buttonLink,
     img,
     alt,
     primary,
@@ -41,7 +42,7 @@ const InfoSection = ({ lightBg,
                                 <Subtitle darkText={darkText}>{description}</Subtitle>
                                 <BtnWrap>
                                     <Button
-                                        to='/contact'
+                                        to={buttonLink}
                                         smooth={true}
                                         duration={500}
                                         spy={true}

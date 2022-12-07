@@ -1,8 +1,10 @@
 import { Calendar } from "@progress/kendo-react-dateinputs";
 import { useState } from "react";
+import React from "react";
 
 const PickDateOfClass = props => {
   const [date, setDate] = useState(null);
+  
 
   return (
     <div className="k-my-8">

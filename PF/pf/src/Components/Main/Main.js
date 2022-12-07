@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { homeObjOne} from '../InfoSection/Data';
+import { homeObjOne, homeObjTwo} from '../InfoSection/Data';
 import InfoSection from '../InfoSection';
+import Navbar from '../Navbar/index';
+
 
 const Main = () => {
     const[isOpen, setIsOpen] = useState(false);
@@ -11,7 +13,11 @@ const Main = () => {
     
         return (
             <>
-                 <InfoSection {...homeObjOne}/>
+
+                <Navbar toggle={toggle} />
+                <InfoSection {...homeObjOne}/>
+                <InfoSection {...homeObjTwo}/>
+                
             </>
         );
 };

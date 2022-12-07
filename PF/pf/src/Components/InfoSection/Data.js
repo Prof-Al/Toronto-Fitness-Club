@@ -9,6 +9,7 @@ export const homeObjOne = {
     headline: 'We are the future of fitness',
     description: `Our studios have cutting-edge equipment, so you maximise every single workout. You are free to focus on the activity and to be better, we do everything else for you. \nAchieve your performance goals and track progress in real-time.`,
     buttonLabel: 'Join Now',
+    buttonLink:'/SignUp',
     imgStart: false,
     img: require('../../images/fitness_5.png'),
     alt:'Tablet screen showing bio analysis of a bald black man. It shows his age, heart rate, age in strength, flexibility, metabolism and cardio.',
@@ -19,14 +20,15 @@ export const homeObjOne = {
 
 //section two
 export const homeObjTwo = {
-    id: 'locations',
+    id: 'Studios',
     lightBg: true,
     lightText: false,
     lightTextDesc: false,
-    topLine: 'Locations',
-    headline: 'Find your nearest gym',
+    topLine: 'See all Studios',
+    headline: 'Find your nearest fitness Studios',
     description: 'We have you covered no matter where you are located. Gyms all around the world, for you.',
-    buttonLabel: 'Join Now',
+    buttonLabel: 'See',
+    buttonLink:'/Classes',
     imgStart: true,
     img: require('../../images/fitness_2.png'),
     alt:'Smiling white woman with french braids practising flexibility. Dressed in a beige high neck tank top and orange textured leggings.',
