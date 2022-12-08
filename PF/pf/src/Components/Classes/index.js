@@ -6,10 +6,8 @@ function Classes() {
 
     
     return (
-        <div className="App">
+        <div className="PickDate">
             <PickDateOfClass />
-        <hr className="k-my-8" />
-            <BookDrivingSlot />
         </div>
     );
 };
