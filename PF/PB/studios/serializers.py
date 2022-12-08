@@ -13,7 +13,7 @@ class ClassSerializer(serializers.ModelSerializer):
     studio = StudioSerializer
     class Meta:
         model = Class
-        fields = ('name', 'description', 'coach', 'keywords', 
+        fields = ('id', 'name', 'description', 'coach', 'keywords',
             'capacity', 'start_date', 'end_date', 'recurring', 'time_from', 'time_end' , 'range')
 
 class TimeSerializer(serializers.ModelSerializer):
