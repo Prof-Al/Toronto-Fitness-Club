@@ -6,9 +6,11 @@ const Studios = () => {
     const { setStudios } = useContext(APIContext);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/studios/list/`)
-            .then(res => res.json())
+        fetch("https://www.balldontlie.io/api/v1/players?page=1&per_page=20&search=David")
+            .then(res => {
+                res.json()})
             .then(json => {
+                console.log(json)
                 setStudios(json.data);
             })
     }, [setStudios])

@@ -22,6 +22,7 @@ const StudiosTable = () => {
                 <td>{ studio.name }</td>
                 <td>{ studio.address }</td>
                 <td>{ studio.postal_code }</td>
+                
             </tr>
         ))}
         </tbody>
