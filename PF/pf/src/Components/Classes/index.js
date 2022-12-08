@@ -1,6 +1,6 @@
 import React from 'react';
 import PickDateOfClass from './Canlendar'
-import BookDrivingSlot from './ListClasses'
+
 
 function Classes() {
 

@@ -1,14 +1,16 @@
 import { Calendar } from "@progress/kendo-react-dateinputs";
 import { useState, useEffect } from "react";
 import React from "react";
-import APIContextc, {useAPIContext} from "../../Contexts/APIContextc";
-import ClassesTable from "./ClassesTable";
+import {Link, useNavigate} from 'react-router-dom';
 const PickDateOfClass = props => {
   const [date, setDate] = useState(null);
   const [dateSearch, setSearchDate] = useState(null);
   const [ classes, setClasses ] = useState(null);
+  const [ idclasses, setidClasses ] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate()
 
   function ChangeDateFormat(Date) {
     const array_D = Date.split(" ")
@@ -35,6 +37,7 @@ const PickDateOfClass = props => {
       setLoading(false);
     }
   };
+ 
 
  
   function changeAll(e){
@@ -44,6 +47,31 @@ const PickDateOfClass = props => {
       setDate(temp2);
       setClasses(null);
   } 
+
+
+
+
+  useEffect(() => {
+    console.log(idclasses)
+    if(idclasses !== undefined && idclasses !== null){
+      try {
+        console.log("http://127.0.0.1:8000/studios/class/times/" + idclasses + "/enroll/")
+        const res = fetch(
+          "http://127.0.0.1:8000/studios/class/times/" + idclasses + "/enroll/"
+        );
+        const data = res.json();
+        console.log(data)
+   
+      } catch {
+        console.log("error", error);
+        navigate("/Login")
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [idclasses])
+
 
 
   
@@ -83,7 +111,7 @@ const PickDateOfClass = props => {
                   <td>{ classes.capacity }</td>
                   <td>{ classes.time_from }</td>
                   <td>{ classes.time_end }</td>
-                  <td><button id={classes.id}>enroll</button></td>
+                  <td><button onClick={() =>{setidClasses(classes.id);console.log(idclasses);}}>enroll</button></td>
               </tr>
           ))}
           </tbody>
