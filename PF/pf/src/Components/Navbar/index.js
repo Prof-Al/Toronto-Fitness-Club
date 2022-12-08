@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
 import { animateScroll as scroll } from 'react-scroll';
@@ -17,6 +17,7 @@ import {
 
 const Navbar = ({ toggle }) => {
     const [scrollNav, setScrollNav] = useState(false);
+    const [isAuth, setIsAuth] = useState(false);
 
     const changeNav = () => {
         if (window.scrollY >= 80) {
@@ -29,6 +30,14 @@ const Navbar = ({ toggle }) => {
     useEffect(() => {
         window.addEventListener('scroll', changeNav);
     }, []);
+
+    useEffect(() => {
+        console.log(localStorage.getItem('token'))
+        if (localStorage.getItem('token') !== null) {
+            console.log("authenticated now")
+            setIsAuth(true);
+        }
+      }, []);
 
     const toggleHome = () => {
         scroll.scrollToTop();
@@ -84,9 +93,27 @@ const Navbar = ({ toggle }) => {
 
                             
                         </NavMenu>
-                        <NavBtn>
-                            <NavBtnLink to='/login'>Log In</NavBtnLink>
-                        </NavBtn>
+                        {isAuth === true ? (
+                            <Fragment>
+                                {' '}
+                                <NavBtn>
+                                    <NavBtnLink to='/profile'>Profile</NavBtnLink>
+                                </NavBtn>
+                                <NavBtn>
+                                    <NavBtnLink to='/logout'>Log Out</NavBtnLink>
+                                </NavBtn>
+                            </Fragment>
+                            ) : (
+                            <Fragment>
+                                {' '}
+                                <NavBtn>
+                                    <NavBtnLink to='/login'>Log In</NavBtnLink>
+                                </NavBtn>
+                                <NavBtn>
+                                    <NavBtnLink to='/signup'>Sign Up</NavBtnLink>
+                                </NavBtn>
+                            </Fragment>
+                            )}
                     </NavbarContainer>
                 </Nav>
             </IconContext.Provider>

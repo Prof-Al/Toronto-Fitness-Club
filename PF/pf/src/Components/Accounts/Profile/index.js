@@ -15,6 +15,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Fragment } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function LinkTab(props) {
@@ -32,6 +34,7 @@ function LinkTab(props) {
 export default function ProfilePage() {
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -44,8 +47,16 @@ export default function ProfilePage() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('token') !== null) {
+      setIsAuth(true);
+    }
+  }, []);
+
   return (
     <Box sx={{ width: '100%' }}>
+      {isAuth === true ? (
+      <Fragment>
       <Tabs orientation="vertical" value={value} onChange={handleChange} aria-label="nav tabs example">
         <LinkTab icon={<AccountCircleIcon />} label="Overview" href="/overview" />
         <LinkTab icon={<CreditCardIcon />} label="Billing" href="/billing" />
@@ -155,6 +166,12 @@ export default function ProfilePage() {
             </Box>
           )}
         </Box>
+      </Fragment>
+      ) : (
+      <Fragment>
+          <div>You are not logged in!</div>
+      </Fragment>
+      )}
     </Box>
 
   );
