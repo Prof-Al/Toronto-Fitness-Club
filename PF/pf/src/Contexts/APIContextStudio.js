@@ -8,8 +8,8 @@ export const useAPIContext = () => {
     }
 }
 
-const APIContext = createContext({
+const APIContextStudio = createContext({
     studios: null, setStudios: () => {},
 })
 
-export default APIContext;
+export default APIContextStudio;

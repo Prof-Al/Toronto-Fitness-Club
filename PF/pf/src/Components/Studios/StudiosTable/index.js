@@ -1,8 +1,8 @@
 import {useContext} from "react";
-import APIContext from "../../../Contexts/APIContext";
+import APIContextStudio from "../../../Contexts/APIContextStudio";
 
 const StudiosTable = () => {
-    const { studios } = useContext(APIContext);
+    const { studios } = useContext(APIContextStudio);
 
     return <table>
         <thead>
@@ -15,7 +15,7 @@ const StudiosTable = () => {
         </tr>
         </thead>
         <tbody>
-        {studios?.map((studio) => (
+        {studios?.map((studio, index) => (
             <tr key={ studio.id }>
                 <td>" "</td>
                 <td>{ studio.id }</td>
