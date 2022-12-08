@@ -7,6 +7,8 @@ import "@progress/kendo-theme-default/dist/all.css";
 import Classes from  './Components/Classes/index'
 import RegisterPage from './Components/Accounts/Register';
 import LoginPage from './Components/Accounts/Login';
+import ProfilePage from './Components/Accounts/Profile';
+
 function App() {
 
   return (
@@ -17,6 +19,7 @@ function App() {
         <Route path="/Classes" element={<Classes/>} />
         <Route path="/Signup" element={<RegisterPage/>} />
         <Route path="/Login" element={<LoginPage/>} />
+        <Route path="/Profile" element={<ProfilePage/>} />
       </Routes>
     </Router>
   );
