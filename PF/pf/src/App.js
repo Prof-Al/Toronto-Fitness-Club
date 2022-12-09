@@ -6,6 +6,7 @@ import Studios from './Components/Studios/Studio_All';
 import Studio from './Components/Studios/Studio_Detail';
 import "@progress/kendo-theme-default/dist/all.css";
 import PickDateOfClass from  './Components/Classes/Canlendar'
+import OtherClasses  from  './Components/Classes/OtherSearch'
 import RegisterPage from './Components/Accounts/Register';
 import LoginPage from './Components/Accounts/Login';
 import ProfilePage from './Components/Accounts/Profile';
@@ -19,8 +20,8 @@ function App() {
         <Route path="/Studios" element={<Studios />} />
         <Route path="/Studio/:studio_id" element={<Studio />} />
 
-        <Route path="/Date" element={<PickDateOfClass/>} />
-        <Route path="/Name" element={<PickDateOfClass/>} />
+        <Route path="/Date/:studio_id" element={<PickDateOfClass/>} />
+        <Route path="/Other/:studio_id" element={<OtherClasses/>} />
 
         <Route path="/Signup" element={<RegisterPage/>} />
         <Route path="/Login" element={<LoginPage/>} />
