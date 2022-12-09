@@ -127,3 +127,53 @@ export const NavBtnLink = styled(LinkR)`
 
     }
 `
+
+export const StyledUl = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+`;
+
+export const StyledLi = styled.li`
+  float: left;
+`;
+
+export const SubA = styled.a`
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  &:hover {
+    background-color: #f1f1f1;
+  }
+`;
+
+export const Dropbtn = styled.div`
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  text-decoration: none;
+`;
+
+export const DropDownContent = styled.div`
+  display: none;
+  position: absolute;
+  background-color: black;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+`;
+
+export const DropDownLi = styled(StyledLi)`
+  display: inline-block;
+  &:hover {
+    background-color: #FF7900;
+  }
+  &:hover ${DropDownContent} {
+    display: block;
+  }
+`;

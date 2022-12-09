@@ -12,6 +12,10 @@ import {
     NavLinks,
     NavBtn,
     NavBtnLink,
+    SubA,
+    DropDownLi,
+    Dropbtn,
+    DropDownContent,
 
 } from './NavbarElements';
 
@@ -91,15 +95,23 @@ const Navbar = ({ toggle }) => {
                             
                         </NavMenu>
                         {isAuth === true ? (
-                            <Fragment>
-                                {' '}
+                            <DropDownLi>
+                                <Dropbtn>
+                                Account
+                                </Dropbtn>
+                                <DropDownContent>
+                                {" "}
                                 <NavBtn>
                                     <NavBtnLink to='/profile'>Profile</NavBtnLink>
                                 </NavBtn>
                                 <NavBtn>
-                                    <NavBtnLink onClick={logout} to='/'>Log Out</NavBtnLink>
+                                    <NavBtnLink to='/profile'>Manage Subscription</NavBtnLink>
                                 </NavBtn>
-                            </Fragment>
+                                <NavBtn>
+                                    <NavBtnLink onClick={logout}>Logout</NavBtnLink>
+                                </NavBtn>
+                                </DropDownContent>
+                            </DropDownLi>
                             ) : (
                             <Fragment>
                                 {' '}
