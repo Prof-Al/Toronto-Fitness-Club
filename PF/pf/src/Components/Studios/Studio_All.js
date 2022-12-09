@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Maps from '../../Components/Globalcomponents/Maps';
 
 const Studios = () => {
     const [studios, setStudios] = useState(null);
@@ -139,7 +138,6 @@ const Studios = () => {
             })} disabled={ params.page === total || total === 0 }>
                 next
             </button>
-          <p> <Maps /> </p>
         </>
     );
 }
