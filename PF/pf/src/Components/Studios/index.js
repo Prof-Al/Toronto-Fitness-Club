@@ -1,37 +1,83 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 const Studios = () => {
-  const [studios, setStudios] = useState(null);
-  // const [headers, setHeaders] = useState(null);
-  const [params, setParams] = useState({page: 1, search: ""})
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const fetchStudios = useCallback(async () => {
-      const { page } = params;
-      try {
-          const res = await fetch(
-              'http://127.0.0.1:8000/studios/list/?p=' + page);
-          const data = await res.json();
-          setStudios(data);
-          // setHeaders(parseFloat(res.headers.get('Content-Type')));
-      } catch {
-          console.log("error", error);
-          setError(error);
-      } finally {
-          setLoading(false);
-      }
-  }, [error, params])
+    const [studios, setStudios] = useState(null);
+    const [params, setParams] = useState({page: 1, name: "", coach: "", amenity: "", quantity: ""});
+    const [preps, setPreps] = useState({page: 1, name: "", coach: "", amenity: "", quantity: ""});
+    const [total, setTotal] = useState(1);
 
-  useEffect(() => fetchStudios, [fetchStudios]);
-
-  if (loading) return <p>Data are loading...</p>;
-  if (error) return <p>Error: {error.status}</p>;
+    useEffect(() => {
+        const { page, name, coach, amenity, quantity } = params;
+        fetch(`http://127.0.0.1:8000/studios/list/?p=${page}&name=${name}&coach=${coach}&amenity=${amenity}&quantity=${quantity}`)
+            .then(res => {
+                const comp = parseInt(res.headers.get('count'));
+                (comp % 5)===0 ? setTotal(Math.round(comp / 5)) : setTotal(Math.round(comp / 5) + 1);
+                return res.json()
+            }).then(json => {setStudios(json);})
+    }, [params])
 
   return (
       <>
-        <>{ params.page }</>
-        {/*<>{ headers.count }</>*/}
-        <table>
+      <p>Studio Name
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={preps.name}
+            onChange={(event) => {
+                setPreps({
+                    ...preps,
+                    name: event.target.value,
+                    page: 1,
+                })
+            }}
+         /></p>
+      <p>Coach Name
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={preps.coach}
+            onChange={(event) => {
+                setPreps({
+                    ...preps,
+                    coach: event.target.value,
+                    page: 1,
+                })
+            }}
+         /></p>
+      <p>Amenity
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={preps.amenity}
+            onChange={(event) => {
+                setPreps({
+                    ...preps,
+                    amenity: event.target.value,
+                    page: 1,
+                })
+            }}
+         /></p>
+      <p>Quantity
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={preps.quantity}
+            onChange={(event) => {
+                setPreps({
+                    ...preps,
+                    quantity: event.target.value,
+                    page: 1,
+                })
+            }}
+         /></p>
+        <button onClick={(event) => {
+                setParams({
+                    ...params,
+                    name: preps.name,
+                    coach: preps.coach,
+                    amenity: preps.amenity,
+                    quantity: preps.quantity,
+                    page: 1,
+                })
+            }}>Search!</button>
+          <br/><br/><>{ total }</>
+            <table>
             <thead>
             <tr>
                 <th> # </th>
@@ -53,20 +99,22 @@ const Studios = () => {
             ))}
             </tbody>
         </table>
-        <button onClick={() => setParams({
-                ...params,
-                page: params.page - 1
-            })}>
-                prev
-            </button>
             <button onClick={() => setParams({
                 ...params,
-                page: params.page + 1
-            })}>
+                page: Math.max(1, params.page - 1)
+            })} disabled={ params.page === 1 }>
+                prev
+            </button>
+            <>{ params.page }</>
+            <button onClick={() => setParams({
+                ...params,
+                page: Math.min(total, params.page + 1)
+            })} disabled={ params.page === total || total === 0 }>
                 next
-        </button>
-      </>
-  );
+            </button>
+        </>
+    );
 }
 
 export default Studios;
+// comment
