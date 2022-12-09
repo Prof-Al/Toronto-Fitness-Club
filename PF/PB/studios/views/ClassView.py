@@ -147,6 +147,13 @@ class TimeSearchView(generics.ListAPIView):
             have_p = True
             _datetime = datetime.strptime(self.request.query_params.get('date_end'), '%Y-%m-%d')
             result = result | Time.objects.filter(date_end__year=_datetime.year, date_end__month=_datetime.month, date_end__day=_datetime.day)
+
+        if self.request.query_params.get('capacity'):
+            have_p = True
+
+            temp = Time.objects.filter(capacity = self.request.query_params.get('capacity'))
+            result = temp | result
+
         if(have_p == False):
             for _class in _Class :
                 temp = Time.objects.filter(studio_class = _class)
