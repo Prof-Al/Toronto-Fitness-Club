@@ -62,8 +62,22 @@ class ListStudioView(ListAPIView):
                         if aq['quantity'] >= q : wanted.append(s['id'])
                         break
             studios = studios.filter(id__in = wanted)
-        
-        g = geocoder.ip('me')
+
+        if self.request.query_params.get('lat'):
+            if self.request.query_params.get('lng'):
+                try:
+                    latitude = self.request.query_params.get('lat')
+                    longitude = self.request.query_params.get('lat')
+                    geolocator = Nominatim(user_agent="studios")
+                    location = geolocator.geocode(self.address, exactly_one=True)
+                    g = geocoder.google(location)
+                except:
+                    g = geocoder.ip('me')
+            else:
+                g = geocoder.ip('me')
+        else:
+            g = geocoder.ip('me')
+
         g = g.latlng
         result = []
         for s in studios:

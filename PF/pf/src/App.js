@@ -1,8 +1,9 @@
-  import React from 'react';
+import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Main from './Components/Main/Main';
-import Studios from './Components/Studios/index';
+import Studios from './Components/Studios/Studio_All';
+import Studio from './Components/Studios/Studio_Detail';
 import "@progress/kendo-theme-default/dist/all.css";
 import PickDateOfClass from  './Components/Classes/Canlendar'
 import RegisterPage from './Components/Accounts/Register';
@@ -16,8 +17,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Main/>} />
         <Route path="/Studios" element={<Studios />} />
+        <Route path="/Studio/:studio_id" element={<Studio />} />
+
         <Route path="/Date" element={<PickDateOfClass/>} />
         <Route path="/Name" element={<PickDateOfClass/>} />
+
         <Route path="/Signup" element={<RegisterPage/>} />
         <Route path="/Login" element={<LoginPage/>} />
         <Route path="/Profile" element={<ProfilePage/>} />
