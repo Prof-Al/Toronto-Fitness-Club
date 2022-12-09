@@ -2,12 +2,12 @@ import React, {useEffect, useState} from "react";
 
 const Studios = () => {
     const [studios, setStudios] = useState(null);
-    const [params, setParams] = useState({page: 1, name: "", coach: ""});
+    const [params, setParams] = useState({page: 1, name: "", coach: "", amenity: ""});
     const [total, setTotal] = useState(1);
 
     useEffect(() => {
-        const { page, name, coach } = params;
-        fetch(`http://127.0.0.1:8000/studios/list/?p=${page}&name=${name}&coach=${coach}`)
+        const { page, name, coach, amenity } = params;
+        fetch(`http://127.0.0.1:8000/studios/list/?p=${page}&name=${name}&coach=${coach}&amenity=${amenity}`)
             .then(res => {
                 const comp = parseInt(res.headers.get('count'));
                 (comp % 5)===0 ? setTotal(Math.round(comp / 5)) : setTotal(Math.round(comp / 5) + 1);
@@ -17,7 +17,7 @@ const Studios = () => {
 
   return (
       <>
-      <p>Studio Name</p>
+      <p>Studio Name
          <input
             style={{width: 100, height: 20, fontSize: 18, margin: 4}}
             value={params.name}
@@ -28,8 +28,8 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         />
-      <p>Coach Name</p>
+         /></p>
+      <p>Coach Name
          <input
             style={{width: 100, height: 20, fontSize: 18, margin: 4}}
             value={params.coach}
@@ -40,7 +40,20 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /><>{ total }</>
+         /></p>
+      <p>Amenity
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={params.amenity}
+            onChange={(event) => {
+                setParams({
+                    ...params,
+                    amenity: event.target.value,
+                    page: 1,
+                })
+            }}
+         /></p>
+          <br/><br/><>{ total }</>
         {/*<button onClick={*/}
 
         {/*  }>Search!</button>*/}
