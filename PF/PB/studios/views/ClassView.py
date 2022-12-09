@@ -118,9 +118,12 @@ class TimeSearchView(generics.ListAPIView):
             return get_object_or_404(Studio, id=self.kwargs['pk'])
 
         result = Time.objects.none()
+        have_p = False
         _Class = Class.objects.filter(studio=find_studio)
 
+
         if self.request.query_params.get('name'):
+            have_p = True
             _Class = _Class.filter(name=self.request.query_params.get('name'))
 
             for _class in _Class :
@@ -128,18 +131,31 @@ class TimeSearchView(generics.ListAPIView):
                 result = temp | result
 
         if self.request.query_params.get('coach'):
+            have_p = True
             _Class = _Class.filter(coach=self.request.query_params.get('coach'))
             for _class in _Class:
                 temp = Time.objects.filter(studio_class=_class)
                 result = temp | result
 
         if self.request.query_params.get('date_from'):
+            have_p = True
 
             _datetime = datetime.strptime(self.request.query_params.get('date_from'), '%Y-%m-%d').date()
             temp = Time.objects.filter(date_from__year=_datetime.year, date_from__month=_datetime.month, date_from__day=_datetime.day)
             result = result | temp
         if self.request.query_params.get('date_end'):
+            have_p = True
             _datetime = datetime.strptime(self.request.query_params.get('date_end'), '%Y-%m-%d')
             result = result | Time.objects.filter(date_end__year=_datetime.year, date_end__month=_datetime.month, date_end__day=_datetime.day)
 
+        if self.request.query_params.get('capacity'):
+            have_p = True
+
+            temp = Time.objects.filter(capacity = self.request.query_params.get('capacity'))
+            result = temp | result
+
+        if(have_p == False):
+            for _class in _Class :
+                temp = Time.objects.filter(studio_class = _class)
+                result = result | temp
         return result
