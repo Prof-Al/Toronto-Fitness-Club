@@ -21,6 +21,7 @@ export const MembershipsContainer = styled.div`
 export const MembershipsWrapper = styled.div` 
     max-width: 1200px;
     margin: 0 auto;
+    margin-top: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
@@ -70,7 +71,7 @@ export const MembershipsIcon = styled.img`
 export const MembershipsH1 = styled.h1` 
     font-size: 2.5rem;
     color: #fff;
-    margin-bottom: 64px;
+    margin-bottom: 40px;
 
     @media screen and (max-width: 768px) {
 
