@@ -87,14 +87,6 @@ const Navbar = ({ toggle }) => {
                                 offset={-80}>Subscriptions</NavLinks>
                             </NavItem>
 
-                            <NavItem>
-                                <NavLinks to='Search'
-                                smooth={true}
-                                duration={500}
-                                spy={true}
-                                exact='true'
-                                offset={-80}>Search</NavLinks>
-                            </NavItem>
 
                             
                         </NavMenu>
