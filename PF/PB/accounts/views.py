@@ -96,7 +96,7 @@ class CancelSubscriptionView(UpdateAPIView):
 
 class ListPaymentHistoryView(ListAPIView):
     model = PaymentTransaction
-    pagination_class = CustomPagination
+    pagination_class = None
     serializer_class = PaymentTransactionSerializer
 
     def get_queryset(self):
@@ -123,6 +123,7 @@ class ListPaymentHistoryView(ListAPIView):
                                     "date": user.next_payment_date,
                                     "card_info": user.card_info,
                                     "recurrence": plan})
+        payment_history.reverse()
         return payment_history
 
 
