@@ -37,11 +37,16 @@ const Navbar = ({ toggle }) => {
             console.log("authenticated now")
             setIsAuth(true);
         }
-      }, []);
+      }, [isAuth]);
 
     const toggleHome = () => {
         scroll.scrollToTop();
     };
+
+    const logout = () => {
+        setIsAuth(false)
+        localStorage.removeItem("token")
+    }
 
     return (
         <>
@@ -100,7 +105,7 @@ const Navbar = ({ toggle }) => {
                                     <NavBtnLink to='/profile'>Profile</NavBtnLink>
                                 </NavBtn>
                                 <NavBtn>
-                                    <NavBtnLink to='/logout'>Log Out</NavBtnLink>
+                                    <NavBtnLink onClick={logout} to='/'>Log Out</NavBtnLink>
                                 </NavBtn>
                             </Fragment>
                             ) : (
