@@ -3,7 +3,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import RegistrationView, LogoutView, ChangePasswordView, UpdateProfileView, AddSubscriptionView, \
-    UpdateCardInfoView, UpdateSubscriptionView, CancelSubscriptionView, ListPaymentHistoryView, ProfileView
+    UpdateCardInfoView, UpdateSubscriptionView, CancelSubscriptionView, ListPaymentHistoryView, ProfileView, \
+    ListSubscriptionsView
 from rest_framework_simplejwt import views
 
 from .TimeView import TimeUpcomingView, TimeHistoryView
@@ -20,6 +21,7 @@ urlpatterns = [
     path('cancel_subscription/', CancelSubscriptionView.as_view()),
     path('payment_history/', ListPaymentHistoryView.as_view()),
     path('profile/', ProfileView.as_view()),
+    path('subscriptions/', ListSubscriptionsView.as_view()),
 
     path('time/upcoming/', TimeUpcomingView.as_view()),    
     path('time/history/', TimeHistoryView.as_view()),   
