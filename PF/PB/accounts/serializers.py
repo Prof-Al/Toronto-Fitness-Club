@@ -16,7 +16,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'phone', 'avatar', 'password', 'password2']
+        fields = ['email', 'first_name', 'last_name', 'phone', 'password', 'password2']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -37,8 +37,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
                           first_name=self.validated_data['first_name'],
                           last_name=self.validated_data['last_name'],
                           phone=self.validated_data['phone'])
-        if self.validated_data.get('avatar'):
-            user.avatar = self.validated_data.get('avatar')
+        # if self.validated_data.get('avatar'):
+        #     user.avatar = self.validated_data.get('avatar')
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
         if password != password2:
@@ -261,3 +261,8 @@ class PaymentTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentTransaction
         fields = ['id', 'amount', 'date', 'card_info', 'recurrence']
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'first_name', 'last_name', 'phone', 'avatar', 'card_info']
