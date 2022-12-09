@@ -15,14 +15,14 @@ import {useParams} from "react-router-dom";
 import {
   Container,
   Calendardiv,
-} from './ClassesElement'
+} from './timesElement'
 
-const PickDateOfClass = props => {
+const PickDateOfTimes = props => {
   const { studio_id } = useParams();
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
-  const [ classes, setClasses ] = useState(null);
-  const [ idclasses, setidClasses ] = useState(null);
+  const [ times, settimes ] = useState(null);
+  const [ idtimes, setidtimes ] = useState(null);
 
 
   const [params, setParams] = useState({page: 1, name: "", coach: "", range_greater: "", range_smaller: "", start_date:"", end_date:""});
@@ -51,7 +51,7 @@ const PickDateOfClass = props => {
             (comp % 5)===0 ? setTotal(Math.floor(comp / 5)) : setTotal(Math.floor(comp / 5) + 1);
             console.log(total);
             return res.json()
-        }).then(json => {setClasses(json);})
+        }).then(json => {settimes(json);})
   }, [params]) 
  
 
@@ -61,12 +61,12 @@ const PickDateOfClass = props => {
 
 
   useEffect(() => {
-    console.log(idclasses)
-    if(idclasses !== undefined && idclasses !== null){
+    console.log(idtimes)
+    if(idtimes !== undefined && idtimes !== null){
       try {
-        console.log("http://127.0.0.1:8000/studios/class/" + idclasses + "/enroll/")
+        console.log("http://127.0.0.1:8000/studios/class/" + idtimes + "/enroll/")
         fetch(
-          "http://127.0.0.1:8000/studios/class/" + idclasses + "/enroll/"
+          "http://127.0.0.1:8000/studios/class/" + idtimes + "/enroll/"
         ).then(res => {
           if(!res.ok){
             if(res.status){
@@ -87,7 +87,7 @@ const PickDateOfClass = props => {
         setLoading(false);
       }
     }
-  }, [idclasses])
+  }, [idtimes])
 
 
 
@@ -152,7 +152,7 @@ const PickDateOfClass = props => {
       
       <Calendardiv>
         <div>
-        <div>Select Start Date to see available classes</div>
+        <div>Select Start Date to see available times</div>
         <Calendar value={date} onChange={e =>{
           setDate(e.value)
           setPreps({
@@ -164,7 +164,7 @@ const PickDateOfClass = props => {
         <div className="select_s">Selected date: {date?.toDateString()}</div>
         </div>
         <div>
-        <div>Select end Date to see available classes</div>
+        <div>Select end Date to see available times</div>
         <Calendar value={date2} onChange={e =>{
           setDate2(e.value)
           setPreps({
@@ -220,7 +220,7 @@ const PickDateOfClass = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {classes?.map((row) => (
+            {times?.map((row) => (
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -237,7 +237,7 @@ const PickDateOfClass = props => {
                 <TableCell align="right">{row.time_from}</TableCell>
                 <TableCell align="right">{row.time_end}</TableCell>
                 
-                <Button  variant="outlined" onClick={() =>{setidClasses(row.id)}}>enroll</Button>
+                <Button  variant="outlined" onClick={() =>{setidtimes(row.id)}}>enroll</Button>
               </TableRow>
 
             ))}
@@ -268,4 +268,4 @@ const PickDateOfClass = props => {
 };
 
 
-export default PickDateOfClass;
+export default PickDateOfTimes;
