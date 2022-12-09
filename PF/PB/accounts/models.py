@@ -11,7 +11,7 @@ class Subscription(models.Model):
         ("Monthly", "Monthly"),
         ("Yearly", "Yearly")
     )
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     amount = models.FloatField(default=0)
     duration = models.CharField(max_length=10, choices=choices)
 
