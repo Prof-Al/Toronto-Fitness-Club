@@ -12,4 +12,5 @@ class CustomPagination(pagination.PageNumberPagination):
         response['count'] = self.page.paginator.count
         response['next'] = self.get_next_link()
         response['previous'] = self.get_previous_link()
+        response['Access-Control-Expose-Headers'] = "count"
         return response

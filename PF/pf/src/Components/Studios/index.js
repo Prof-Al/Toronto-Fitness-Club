@@ -1,22 +1,19 @@
 import React, {useEffect, useState} from "react";
 
 const Studios = () => {
-  const [studios, setStudios] = useState(null);
-  const [params, setParams] = useState({page: 1, name: "", coach: ""})
+    const [studios, setStudios] = useState(null);
+    const [params, setParams] = useState({page: 1, name: "", coach: ""});
+    const [total, setTotal] = useState(1);
 
-  useEffect(() => {
+    useEffect(() => {
         const { page, name, coach } = params;
         fetch(`http://127.0.0.1:8000/studios/list/?p=${page}&name=${name}&coach=${coach}`)
-            .then(res => res.json())
-            .then(json => {
-                setStudios(json);
-            })
-        fetch(`http://127.0.0.1:8000/studios/list/?p=${page}`, {method: 'OPTIONS'}) //&search=${search}
-            .then((response) => {
-              response.setHeader("Access-Control-Expose-Headers", "X-Custom-Header");
-              console.log(...response.headers.get('X-Custom-Header'));
-            })
-  }, [params])
+            .then(res => {
+                const comp = parseInt(res.headers.get('count'));
+                (comp % 5)===0 ? setTotal(Math.round(comp / 5)) : setTotal(Math.round(comp / 5) + 1);
+                return res.json()
+            }).then(json => {setStudios(json);})
+    }, [params])
 
   return (
       <>
@@ -43,12 +40,11 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         />
-      {/*<button onClick={*/}
+         /><>{ total }</>
+        {/*<button onClick={*/}
 
-      {/*  }>Search!</button>*/}
-        <>{ params.page }</>
-        <table>
+        {/*  }>Search!</button>*/}
+            <table>
             <thead>
             <tr>
                 <th> # </th>
@@ -76,14 +72,15 @@ const Studios = () => {
             })}>
                 prev
             </button>
+            <>{ params.page }</>
             <button onClick={() => setParams({
                 ...params,
-                page: params.page + 1
+                page: Math.min(total, params.page + 1)
             })}>
                 next
             </button>
-      </>
-  );
+        </>
+    );
 }
 
 export default Studios;
