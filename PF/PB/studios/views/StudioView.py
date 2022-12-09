@@ -67,21 +67,28 @@ class ListStudioView(ListAPIView):
             if self.request.query_params.get('lng'):
                 try:
                     latitude = self.request.query_params.get('lat')
-                    longitude = self.request.query_params.get('lat')
-                    geolocator = Nominatim(user_agent="studios")
-                    location = geolocator.geocode(self.address, exactly_one=True)
-                    g = geocoder.google(location)
+                    longitude = self.request.query_params.get('lng')
                 except:
                     g = geocoder.ip('me')
+                    g = g.latlng
+                    latitude = g[0]
+                    longitude = g[1]
             else:
                 g = geocoder.ip('me')
+                g = g.latlng
+                latitude = g[0]
+                longitude = g[1]
         else:
             g = geocoder.ip('me')
+            g = g.latlng
+            latitude = g[0]
+            longitude = g[1]
 
-        g = g.latlng
         result = []
+        print(latitude)
+        print(longitude)
         for s in studios:
-            dist = geodesic(g, (s["latitude"], s["longitude"]))
+            dist = geodesic((latitude, longitude), (s["latitude"], s["longitude"]))
             id = s["id"]
             result.append([dist, id])
 
