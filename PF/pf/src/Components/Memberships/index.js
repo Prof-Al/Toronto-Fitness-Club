@@ -2,6 +2,8 @@ import React from 'react';
 import Icon1 from '../../images/icon-1.svg';
 import Icon2 from '../../images/icon-2.svg';
 import Icon3 from '../../images/icon-3.svg';
+
+import { useEffect, useState } from 'react';
 import {
     MembershipsContainer,
     MembershipsH1,
@@ -15,66 +17,50 @@ import {
     DollarSign
 }
     from './MembershipsElements';
+import { NavBtn, NavBtnLink } from '../Navbar/NavbarElements';
 
 const Memberships = () => {
+
+    const [subscription, setSubscription] = useState([]);
+    const [sub_data, setSubData] = useState([]);
+
+    useEffect(() => {
+        const getSubscriptions = async () => {
+              let response = await fetch('http://127.0.0.1:8000/accounts/subscriptions/', {
+                  method: "GET",
+              })
+              let data = await response.json()
+              console.log(data.results)
+              setSubData(data.results)
+        }
+        getSubscriptions();
+    }, [subscription])
+    
+
+    var renderedOutput = sub_data.map(item => <MembershipsCard>
+                                            <MembershipsIcon src={Icon1} />
+                                            <MembershipsH2>{ item.name }</MembershipsH2>
+                                            <MembershipsChecks>
+                                            <MembershipsP>< CheckMark/>Access to 20+ studios</MembershipsP>
+                                            <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
+                                            <MembershipsP>< CheckMark/>Access to professional coaches</MembershipsP>
+                                            <MembershipsP>< CheckMark/>Access to a wide array of classes</MembershipsP>
+                                            </MembershipsChecks>
+                                            <MembershipsH2><DollarSign />{ item.amount } { item.duration }</MembershipsH2>
+                                        </MembershipsCard>)
+
     return (
         <MembershipsContainer id='memberships'>
             <MembershipsH1>Flexible plans to fit your lifestyle</MembershipsH1>
+            <NavBtn>
+                <NavBtnLink to='/profile'>Add/Manage Subscriptions</NavBtnLink>
+            </NavBtn>
             <MembershipsWrapper>
-
-                <MembershipsCard>
-                    <MembershipsIcon src={Icon1} />
-                    <MembershipsH2>Gold</MembershipsH2>
-                    <MembershipsChecks>
-                    <MembershipsP>< CheckMark/>22 pre-built workouts</MembershipsP>
-                    <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
-                    <MembershipsP>< CheckMark/>Access to 4 classes / week</MembershipsP>
-                    <MembershipsP>< CheckMark/>Access to one studio only - chosen by you</MembershipsP>
-                    </MembershipsChecks>
-                    <MembershipsH2><DollarSign />79.99</MembershipsH2>
-                </MembershipsCard>
-
-                <MembershipsCard>
-                    <MembershipsIcon src={Icon1} />
-                    <MembershipsH2>Gold</MembershipsH2>
-                    <MembershipsChecks>
-                    <MembershipsP>< CheckMark/>22 pre-built workouts</MembershipsP>
-                    <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
-                    <MembershipsP>< CheckMark/>Access to 4 classes / week</MembershipsP>
-                    <MembershipsP>< CheckMark/>Access to one studio only - chosen by you</MembershipsP>
-                    </MembershipsChecks>
-                    <MembershipsH2><DollarSign />79.99</MembershipsH2>
-                </MembershipsCard>
-
-                <MembershipsCard>
-                    <MembershipsIcon src={Icon2} />
-                    <MembershipsH2>Platinum</MembershipsH2>
-                    <MembershipsChecks>
-                    <MembershipsP>< CheckMark/>30 pre-built workouts</MembershipsP>
-                    <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
-                    <MembershipsP>< CheckMark/>Access to 8 classes / week</MembershipsP>
-                    <MembershipsP>< CheckMark/>Unlimited access to all of our studios</MembershipsP>
-                    </MembershipsChecks>
-                    <MembershipsH2><DollarSign />119.99</MembershipsH2>
-                </MembershipsCard>
-
-                <MembershipsCard>
-                    <MembershipsIcon src={Icon3} />
-                    <MembershipsH2>Diamond</MembershipsH2>
-                    <MembershipsChecks>
-                    <MembershipsP>< CheckMark/>50 pre-built workouts</MembershipsP>
-                    <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
-                    <MembershipsP>< CheckMark/>Unlimited access to classes</MembershipsP>
-                    <MembershipsP>< CheckMark/>Unlimited access to all of our studios</MembershipsP>
-                    <MembershipsP>< CheckMark/>Monthly meal plan designed by our scientists</MembershipsP>
-                    <MembershipsP>< CheckMark/>1 Personal training session / Week</MembershipsP>
-
-                    </MembershipsChecks>
-                    <MembershipsH2><DollarSign />199.99</MembershipsH2>
-                </MembershipsCard>
+                {renderedOutput}
 
             </MembershipsWrapper>
         </MembershipsContainer>
+
     )
 }
 
