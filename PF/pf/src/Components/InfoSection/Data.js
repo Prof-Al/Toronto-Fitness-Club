@@ -28,7 +28,7 @@ export const homeObjTwo = {
     headline: 'Find your nearest fitness Studios',
     description: 'We have you covered no matter where you are located. Gyms all around the world, for you.',
     buttonLabel: 'See',
-    buttonLink:'/Classes',
+    buttonLink:'/Studios',
     imgStart: true,
     img: require('../../images/fitness_2.png'),
     alt:'Smiling white woman with french braids practising flexibility. Dressed in a beige high neck tank top and orange textured leggings.',

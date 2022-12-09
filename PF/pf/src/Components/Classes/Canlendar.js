@@ -2,6 +2,18 @@ import { Calendar } from "@progress/kendo-react-dateinputs";
 import { useState, useEffect } from "react";
 import React from "react";
 import {Link, useNavigate} from 'react-router-dom';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import {
+  Container,
+} from './ClassesElement'
+
 const PickDateOfClass = props => {
   const [date, setDate] = useState(null);
   const [dateSearch, setSearchDate] = useState(null);
@@ -78,50 +90,55 @@ const PickDateOfClass = props => {
 
 
   return (
-    <div className="Select_date">
+    <Container className="Select_date">
       <div className="select_s">Select Date to see available classes</div>
 
       <Calendar value={date} onChange={e => changeAll(e)} />
       <div className="select_s">Selected date: {date?.toDateString()}</div>
-      <button onClick={fetchClasses}>See all classes</button>
+      <Button  onClick={fetchClasses}>See all classes</Button>
     
       
-      <table>
-          <thead>
-          <tr>
-        
-              <th> id </th>
-              <th> name </th>
-              <th> coach </th>
-              <th> keywords </th>
-              <th> capacity </th>
-              <th> time_from </th>
-              <th> time_end </th>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>id</TableCell>
+              <TableCell align="right">name</TableCell>
+              <TableCell align="right">coach</TableCell>
+              <TableCell align="right">keywords</TableCell>
+              <TableCell align="right">capacity</TableCell>
+              <TableCell align="right">time from</TableCell>
+              <TableCell align="right">time end</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {classes?.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell align="right">{row.name}</TableCell>
+                <TableCell align="right">{row.coach}</TableCell>
+                <TableCell align="right">{row.keywords}</TableCell>
+                <TableCell align="right">{row.capacity}</TableCell>
+                <TableCell align="right">{row.time_from}</TableCell>
+                <TableCell align="right">{row.time_end}</TableCell>
+                <Button  variant="outlined" onClick={() =>{setidClasses(row.id)}}>enroll</Button>
+              </TableRow>
 
-          </tr>
-          </thead>
-          <tbody>
-          {classes?.map((classes, index) => (
-              <tr key={ classes.id }>
-                  <td></td>
-                  <td>{ classes.id }</td>
-                  <td>{ classes.name }</td>
-                  <td>{ classes.coach }</td>
-                  <td>{ classes.keywords }</td>
-                  <td>{ classes.capacity }</td>
-                  <td>{ classes.time_from }</td>
-                  <td>{ classes.time_end }</td>
-                  <td><button onClick={() =>{setidClasses(classes.id);console.log(idclasses);}}>enroll</button></td>
-              </tr>
-          ))}
-          </tbody>
-      </table>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       
 
 
 
       
-    </div>
+    </Container>
   );
   
 };

@@ -1,0 +1,17 @@
+export const SearchObjOne = {
+    id: 'Search',
+    lightBg: false,
+    lightText: true,
+    lightTextDesc: true,
+    topLine: 'Search for Classes',
+    headline: 'We are the future of fitness',
+    description: `Our studios have cutting-edge equipment, so you maximise every single workout. You are free to focus on the activity and to be better, we do everything else for you. \nAchieve your performance goals and track progress in real-time.`,
+    buttonLabel: ['Date', 'Name'],
+    buttonLink:['/Date', '/Name'],
+    imgStart: false,
+    img: require('../../images/fitness_5.png'),
+    alt:'Tablet screen showing bio analysis of a bald black man. It shows his age, heart rate, age in strength, flexibility, metabolism and cardio.',
+    dark: true,
+    primary: true,
+    darkText: false,
+}
