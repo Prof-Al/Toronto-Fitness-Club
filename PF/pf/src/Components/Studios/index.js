@@ -1,36 +1,53 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 const Studios = () => {
   const [studios, setStudios] = useState(null);
-  // const [headers, setHeaders] = useState(null);
-  const [params, setParams] = useState({page: 1, search: ""})
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const fetchStudios = useCallback(async () => {
-      const { page } = params;
-      try {
-          const res = await fetch(
-              'http://127.0.0.1:8000/studios/list/?p=' + page);
-          const data = await res.json();
-          setStudios(data);
-          // setHeaders(parseFloat(res.headers.get('Content-Type')));
-      } catch {
-          console.log("error", error);
-          setError(error);
-      } finally {
-          setLoading(false);
-      }
-  }, [error, params])
+  const [params, setParams] = useState({page: 1, name: "", coach: ""})
 
-  useEffect(() => fetchStudios, [fetchStudios]);
-
-  if (loading) return <p>Data are loading...</p>;
-  if (error) return <p>Error: {error.status}</p>;
+  useEffect(() => {
+        const { page, name, coach } = params;
+        fetch(`http://127.0.0.1:8000/studios/list/?p=${page}&name=${name}&coach=${coach}`)
+            .then(res => res.json())
+            .then(json => {
+                setStudios(json);
+            })
+        fetch(`http://127.0.0.1:8000/studios/list/?p=${page}`, {method: 'OPTIONS'}) //&search=${search}
+            .then((response) => {
+              response.setHeader("Access-Control-Expose-Headers", "X-Custom-Header");
+              console.log(...response.headers.get('X-Custom-Header'));
+            })
+  }, [params])
 
   return (
       <>
+      <p>Studio Name</p>
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={params.name}
+            onChange={(event) => {
+                setParams({
+                    ...params,
+                    name: event.target.value,
+                    page: 1,
+                })
+            }}
+         />
+      <p>Coach Name</p>
+         <input
+            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+            value={params.coach}
+            onChange={(event) => {
+                setParams({
+                    ...params,
+                    coach: event.target.value,
+                    page: 1,
+                })
+            }}
+         />
+      {/*<button onClick={*/}
+
+      {/*  }>Search!</button>*/}
         <>{ params.page }</>
-        {/*<>{ headers.count }</>*/}
         <table>
             <thead>
             <tr>
@@ -53,9 +70,9 @@ const Studios = () => {
             ))}
             </tbody>
         </table>
-        <button onClick={() => setParams({
+            <button onClick={() => setParams({
                 ...params,
-                page: params.page - 1
+                page: Math.max(1, params.page - 1)
             })}>
                 prev
             </button>
@@ -64,9 +81,10 @@ const Studios = () => {
                 page: params.page + 1
             })}>
                 next
-        </button>
+            </button>
       </>
   );
 }
 
 export default Studios;
+// comment
