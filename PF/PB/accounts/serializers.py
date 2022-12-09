@@ -262,6 +262,11 @@ class PaymentTransactionSerializer(serializers.ModelSerializer):
         model = PaymentTransaction
         fields = ['id', 'amount', 'date', 'card_info', 'recurrence']
 
+class SubscriptionSerializer(serializers.ModelSerializer):
+   class Meta:
+    model = Subscription
+    fields = ['name', 'amount', 'duration']
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

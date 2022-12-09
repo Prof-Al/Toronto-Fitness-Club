@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from .models import CustomUser, PaymentTransaction, Subscription
 from .serializers import RegistrationSerializer, ChangePasswordSerializer, UpdateUserSerializer, \
     AddSubscriptionSerializer, UpdateSubscriptionSerializer, CancelSubscriptionSerializer, PaymentTransactionSerializer, \
-    ProfileSerializer
+    ProfileSerializer, SubscriptionSerializer
 from .serializers import UpdateCardInfoSerializer
 from PB.paginations import CustomPagination
 
@@ -124,6 +124,17 @@ class ListPaymentHistoryView(ListAPIView):
                                     "card_info": user.card_info,
                                     "recurrence": plan})
         return payment_history
+
+
+class ListSubscriptionsView(ListAPIView):
+    model = Subscription
+    serializer_class = SubscriptionSerializer
+
+    def get_queryset(self):
+
+        subscriptions = list(Subscription.objects.values())
+
+        return subscriptions
 
 
 class ProfileView(APIView):
