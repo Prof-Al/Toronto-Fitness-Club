@@ -11,6 +11,7 @@ import RegisterPage from './Components/Accounts/Register';
 import LoginPage from './Components/Accounts/Login';
 import ProfilePage from './Components/Accounts/Profile';
 import Enroll_error from './Components/Intermediate/enroll_error';
+import PickDateOfTimes from './Components/Time/Calendar'
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/Maps" element={<Maps />} />
 
         <Route path="/Date/:studio_id" element={<PickDateOfClass/>} />
+        <Route path="/Time/:studio_id" element={<PickDateOfTimes/>} />
         <Route path="/error_enroll" element={<Enroll_error/>} />
 
         <Route path="/Signup" element={<RegisterPage/>} />

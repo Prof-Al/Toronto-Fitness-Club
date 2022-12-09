@@ -15,7 +15,7 @@ import {useParams} from "react-router-dom";
 import {
   Container,
   Calendardiv,
-} from './timesElement'
+} from './TimesElement'
 
 const PickDateOfTimes = props => {
   const { studio_id } = useParams();
@@ -25,8 +25,8 @@ const PickDateOfTimes = props => {
   const [ idtimes, setidtimes ] = useState(null);
 
 
-  const [params, setParams] = useState({page: 1, name: "", coach: "", range_greater: "", range_smaller: "", start_date:"", end_date:""});
-  const [preps, setPreps] = useState({page: 1, name: "", coach: "", range_greater: "", range_smaller: "", start_date:"", end_date:""});
+  const [params, setParams] = useState({page: 1, name: "", coach: "", date_from:"",  capacity:""});
+  const [preps, setPreps] = useState({page: 1, name: "", coach: "",  date_from:"",  capacity:""});
   const [total, setTotal] = useState(1);
 
   const [loading, setLoading] = useState(true);
@@ -44,8 +44,8 @@ const PickDateOfTimes = props => {
   
 
   useEffect(() => {
-    const { page, name, coach, range_greater, range_smaller, start_date, end_date} = params;
-    fetch(`http://127.0.0.1:8000/studios/class/filter/${studio_id}/?p=${page}&name=${name}&coach=${coach}&range_greater=${range_greater}&rannge_smaller=${range_smaller}&start_date=${start_date}&end_date=${end_date}`)
+    const { page, name, coach, date_from, date_end, capacity} = params;
+    fetch(`http://127.0.0.1:8000/studios/class/times/filter/${studio_id}/?p=${page}&name=${name}&coach=${coach}&date_from=${date_from}&capacity=${capacity}`)
         .then(res => {
             const comp = parseInt(res.headers.get('count'));
             (comp % 5)===0 ? setTotal(Math.floor(comp / 5)) : setTotal(Math.floor(comp / 5) + 1);
@@ -109,38 +109,26 @@ const PickDateOfTimes = props => {
                   })
               }}
           /></p>
-          <p>Coach Name
+          <p>Date From
           <input
               style={{width: 100, height: 20, fontSize: 18, margin: 4}}
-              value={preps.coach}
+              value={preps.date_from}
               onChange={(event) => {
                   setPreps({
                       ...preps,
-                      name: event.target.value,
+                      coach: event.target.value,
                       page: 1,
                   })
               }}
           /></p>
-          <p>Date duration (smaller than)
+          <p>Capacity
           <input
               style={{width: 100, height: 20, fontSize: 18, margin: 4}}
-              value={preps.range_smaller}
+              value={preps.capacity}
               onChange={(event) => {
                   setPreps({
                       ...preps,
-                      name: event.target.value,
-                      page: 1,
-                  })
-              }}
-          /></p>
-          <p>Date duration (greater than)
-          <input
-              style={{width: 100, height: 20, fontSize: 18, margin: 4}}
-              value={preps.range_greater}
-              onChange={(event) => {
-                  setPreps({
-                      ...preps,
-                      name: event.target.value,
+                      capacity: event.target.value,
                       page: 1,
                   })
               }}
@@ -157,23 +145,11 @@ const PickDateOfTimes = props => {
           setDate(e.value)
           setPreps({
             ...preps,
-            start_date:  ChangeDateFormat((e.value)?.toDateString()),
+            date_from:  ChangeDateFormat((e.value)?.toDateString()),
             page: 1,
           })
         }} />
         <div className="select_s">Selected date: {date?.toDateString()}</div>
-        </div>
-        <div>
-        <div>Select end Date to see available times</div>
-        <Calendar value={date2} onChange={e =>{
-          setDate2(e.value)
-          setPreps({
-            ...preps,
-            end_date:  ChangeDateFormat((e.value)?.toDateString()),
-            page: 1,
-          })
-        }} />
-        <div className="select_s">Selected date: {date2?.toDateString()}</div>
         </div>
       </Calendardiv>
       <div className="Calendar">
@@ -182,10 +158,8 @@ const PickDateOfTimes = props => {
                     ...params,
                     name: preps.name,
                     coach: preps.coach,
-                    range_greater: preps.range_greater,
-                    range_smaller: preps.range_smaller,
-                    start_date:preps.start_date,
-                    end_date:preps.end_date,
+                    date_from:preps.date_from,
+                    capacity:preps.capacity,
                     page: 1,
                 })
             }}>Search!</Button>
@@ -194,16 +168,15 @@ const PickDateOfTimes = props => {
                     ...params,
                     name: "",
                     coach: "",
-                    range_greater: "",
-                    range_smaller: "",
-                    start_date:"",
-                    end_date:"",
+                    date_from:"",
+                    capacity:"",
                     page: 1,
                 })
                 setDate(null)
                 setDate2(null)
             }}>Reset!</Button>
       </div>
+      <div className="select_s">Capacity with 0 can not be enroll.</div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -211,10 +184,8 @@ const PickDateOfTimes = props => {
               <TableCell>id</TableCell>
               <TableCell align="right">name</TableCell>
               <TableCell align="right">coach</TableCell>
-              <TableCell align="right">keywords</TableCell>
               <TableCell align="right">capacity</TableCell>
-              <TableCell align="right">start_date</TableCell>
-              <TableCell align="right">end_date</TableCell>
+              <TableCell align="right">date_from</TableCell>
               <TableCell align="right">time from</TableCell>
               <TableCell align="right">time end</TableCell>
             </TableRow>
@@ -228,14 +199,11 @@ const PickDateOfTimes = props => {
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.coach}</TableCell>
-                <TableCell align="right">{row.keywords}</TableCell>
+                <TableCell align="right">{row['studio_class'].name}</TableCell>
+                <TableCell align="right">{row['studio_class'].coach}</TableCell>
                 <TableCell align="right">{row.capacity}</TableCell>
-                <TableCell align="right">{row.start_date}</TableCell>
-                <TableCell align="right">{row.end_date}</TableCell>
-                <TableCell align="right">{row.time_from}</TableCell>
-                <TableCell align="right">{row.time_end}</TableCell>
+                <TableCell align="right">{row.date_from}</TableCell>
+                <TableCell align="right">{row.date_end}</TableCell>
                 
                 <Button  variant="outlined" onClick={() =>{setidtimes(row.id)}}>enroll</Button>
               </TableRow>

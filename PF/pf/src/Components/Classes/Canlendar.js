@@ -116,7 +116,7 @@ const PickDateOfClass = props => {
               onChange={(event) => {
                   setPreps({
                       ...preps,
-                      name: event.target.value,
+                      coach: event.target.value,
                       page: 1,
                   })
               }}
@@ -128,7 +128,7 @@ const PickDateOfClass = props => {
               onChange={(event) => {
                   setPreps({
                       ...preps,
-                      name: event.target.value,
+                      range_smaller: event.target.value,
                       page: 1,
                   })
               }}
@@ -140,7 +140,7 @@ const PickDateOfClass = props => {
               onChange={(event) => {
                   setPreps({
                       ...preps,
-                      name: event.target.value,
+                      range_greater: event.target.value,
                       page: 1,
                   })
               }}
