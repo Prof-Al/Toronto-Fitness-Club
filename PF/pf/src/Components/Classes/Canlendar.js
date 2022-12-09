@@ -48,7 +48,8 @@ const PickDateOfClass = props => {
     fetch(`http://127.0.0.1:8000/studios/class/filter/${studio_id}/?p=${page}&name=${name}&coach=${coach}&range_greater=${range_greater}&rannge_smaller=${range_smaller}&start_date=${start_date}&end_date=${end_date}`)
         .then(res => {
             const comp = parseInt(res.headers.get('count'));
-            (comp % 5)===0 ? setTotal(Math.round(comp / 5)) : setTotal(Math.round(comp / 5) + 1);
+            (comp % 5)===0 ? setTotal(Math.floor(comp / 5)) : setTotal(Math.floor(comp / 5) + 1);
+            console.log(total);
             return res.json()
         }).then(json => {setClasses(json);})
   }, [params]) 
@@ -244,7 +245,7 @@ const PickDateOfClass = props => {
               <button onClick={() => setParams({
                   ...params,
                   page: Math.min(total, params.page + 1)
-              })} disabled={ params.page === total || total === 0 }>
+              })} disabled={ params.page === total || total === 1 }>
                   next
         </button>
         
