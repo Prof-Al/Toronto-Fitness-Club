@@ -108,7 +108,7 @@ const Navbar = ({ toggle }) => {
                                     <NavBtnLink to='/profile'>Manage Subscription</NavBtnLink>
                                 </NavBtn>
                                 <NavBtn>
-                                    <NavBtnLink onClick={logout}>Logout</NavBtnLink>
+                                    <NavBtnLink to='/' onClick={logout}>Logout</NavBtnLink>
                                 </NavBtn>
                                 </DropDownContent>
                             </DropDownLi>

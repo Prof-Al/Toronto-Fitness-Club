@@ -30,12 +30,16 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 import IconButton from '@mui/material/IconButton';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import Select from '@mui/material/Select';
 
 function LinkTab(props) {
   return (
@@ -70,6 +74,23 @@ export default function ProfilePage() {
   const [payment_rows, setPaymentRows] = useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [curr_subscription_recur, SetCurrSubscriptionRecur] = useState(null)
+
+  const [subscription, setSubscription] = React.useState(null);
+  const [temp_subscription, setTempSubscription] = React.useState("");
+
+  const [sub_data, setSubData] = useState([]);
+
+    useEffect(() => {
+        const getSubscriptions = async () => {
+              let response = await fetch('http://127.0.0.1:8000/accounts/subscriptions/', {
+                  method: "GET",
+              })
+              let data = await response.json()
+              setSubData(data.results)
+        }
+        getSubscriptions();
+    }, [subscription])
 
   useEffect(() => {
     const getProfiles = async () => {
@@ -80,6 +101,8 @@ export default function ProfilePage() {
             },
           })
           let data = await response.json()
+          let subscription = data.subscription
+          setSubscription(subscription)
           setData(data)
     }
      getProfiles();
@@ -169,6 +192,7 @@ function TablePaginationActions(props) {
 function createData(id, amount, date, card_info, recurrence) {
   if (id === 0) {
     id = "Next Future Payment"
+    SetCurrSubscriptionRecur(recurrence)
   }
 
   return {
@@ -311,6 +335,82 @@ const tryUpdateCardInfo = async (e) => {
   await update_card_info_api(card_info, success, (text)=>{setMessage(text)});
 };
 
+const add_subscription_api = async (subscription, card_info, success, fail) => {
+
+  const response = await fetch(
+        "http://127.0.0.1:8000/accounts/add_subscription/",
+        {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "subscription": temp_subscription,
+              "card_info": card_info
+            })
+        }
+    );
+  const text = await response.text();
+  if (response.status === 200) {
+    setBillingCard(new Date)
+    setProfile(new Date)
+    success(JSON.parse(text));
+  } else {
+    console.log("fail", text);
+    Object.entries(JSON.parse(text)).forEach(([key, value])=>{
+      fail(`${key}: ${value}`);
+    });
+  }
+};
+
+const tryAddSubscription = async (e) => {
+  e.preventDefault();
+  console.log("Adding subscription");
+  await add_subscription_api(temp_subscription, card_info, success, (text)=>{setMessage(text)});
+};
+
+
+const update_subscription_api = async (subscription, success, fail) => {
+
+  const response = await fetch(
+        "http://127.0.0.1:8000/accounts/update_subscription/",
+        {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "subscription": temp_subscription
+            })
+        }
+    );
+  const text = await response.text();
+  if (response.status === 200) {
+    setBillingCard(new Date)
+    setProfile(new Date)
+    success(JSON.parse(text));
+  } else {
+    console.log("fail", text);
+    Object.entries(JSON.parse(text)).forEach(([key, value])=>{
+      fail(`${key}: ${value}`);
+    });
+  }
+};
+
+const tryUpdateSubscription = async (e) => {
+  e.preventDefault();
+  console.log("Updating subscription");
+  await update_subscription_api(temp_subscription, success, (text)=>{setMessage(text)});
+};
+
+
+
+var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.name} - ${item.amount}</MenuItem>)
+
   return (
     <>
       <Box bgcolor="white" sx={{ width: '100%', height: '110vh'}}>
@@ -320,6 +420,7 @@ const tryUpdateCardInfo = async (e) => {
         <Tabs sx={{m: 10}} value={value} onChange={handleChange} aria-label="nav tabs example">
           <Tab icon={<AccountCircleIcon />} label="Overview" />
           <Tab icon={<CreditCardIcon />} label="Billing" />
+          <Tab icon={<FitnessCenterIcon />} label="Subscription" />
         </Tabs>
         <Box>
             {value === 0 && (
@@ -521,7 +622,112 @@ const tryUpdateCardInfo = async (e) => {
             )}
             {value === 2 && (
               <Box>
-                <Typography>The third tab</Typography>
+                {subscription === null ? (
+                  <Fragment>
+                  <Card sx={{ maxWidth: 500, m:10 }}>
+                    <CardActionArea>
+                        <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Subscription Information
+                        </Typography>
+                        <Typography variant="body2" color="text.primary">
+                          <b> Active Subscription: </b> None
+                      </Typography>
+                      <Typography variant="body2" color="text.primary">
+                          <b> Expires on: </b> {data.next_payment_date}
+                      </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button onClick={handleClickOpen} size="small" color="primary">
+                        Add
+                        </Button>
+                        <Dialog open={open} onClose={handleClose}>
+                        <DialogTitle>Add Subscription</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText>
+                            Please select your desired subscription plan.
+                        </DialogContentText>
+                        <InputLabel id="demo-simple-select-label">Subscription</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={temp_subscription}
+                          label="Subscription"
+                          onChange={(e)=>{setTempSubscription(e.target.value)}}
+                        >
+                          {all_subs_dropdown}
+                        </Select>
+                        <br></br>
+                        <br></br>
+                        Please confirm your credit card information.
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="card_info"
+                            label="Card Information"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            onChange={(e)=>{setCardInfo(e.target.value)}}
+                        />
+                        <div style={{margin: "1em", color: "red"}}>{message}</div>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={tryAddSubscription}>Subscribe</Button>
+                        </DialogActions>
+                    </Dialog>
+                    </CardActions>
+                </Card>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                  <Card sx={{ maxWidth: 500, m:10 }}>
+                    <CardActionArea>
+                        <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Subscription Information
+                        </Typography>
+                        <Typography variant="body2" color="text.primary">
+                          <b>Active Subscription:</b> {curr_subscription_recur}
+                      </Typography>
+                      <Typography variant="body2" color="text.primary">
+                          <b>Next Payment Date on:</b> {data.next_payment_date}
+                      </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button onClick={handleClickOpen} size="small" color="primary">
+                        Edit
+                        </Button>
+                        <Dialog open={open} onClose={handleClose}>
+                        <DialogTitle>Edit Subscription</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText>
+                            Please select your desired subscription.
+                        </DialogContentText>
+                        <InputLabel id="demo-simple-select-label">Subscription</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={temp_subscription}
+                          label="Subscription"
+                          onChange={(e)=>{setTempSubscription(e.target.value)}}
+                        >
+                          {all_subs_dropdown}
+                        </Select>
+                        <div style={{margin: "1em", color: "red"}}>{message}</div>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={tryUpdateSubscription}>Save</Button>
+                        </DialogActions>
+                    </Dialog>
+                    </CardActions>
+                </Card>
+                  </Fragment>
+                )}
               </Box>
             )}
           </Box>
