@@ -57,6 +57,7 @@ const PickDateOfClass = props => {
             const comp = parseInt(res.headers.get('count'));
             (comp % 5)===0 ? setTotal(Math.floor(comp / 5)) : setTotal(Math.floor(comp / 5) + 1);
             console.log(total);
+            if (res.status !== 200 || comp === 0) setTotal(0);
             return res.json()
         }).then(json => {setClasses(json);})
   }, [params]) 
@@ -284,7 +285,7 @@ const PickDateOfClass = props => {
               <Button  color="error"   variant="contained" component="label" onClick={() => setParams({
                   ...params,
                   page: Math.min(total, params.page + 1)
-              })} disabled={ params.page === total || total === 1 }>
+              })} disabled={ params.page === total || total === 1 || total === 0 }>
                   next
                   </Button>
         

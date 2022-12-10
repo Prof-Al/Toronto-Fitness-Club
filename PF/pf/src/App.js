@@ -4,8 +4,6 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Main from './Components/Main/Main';
 import Studios from './Components/Studios/Studio_All';
 import Studio from './Components/Studios/Studio_Detail';
-import History from './Components/Accounts/Class Records/History'
-import Record from './Components/Accounts/Class Records/Record'
 
 import "@progress/kendo-theme-default/dist/all.css";
 import PickDateOfClass from  './Components/Classes/Canlendar'
@@ -36,9 +34,6 @@ function App() {
         <Route path="/Signup" element={<RegisterPage/>} />
         <Route path="/Login" element={<LoginPage/>} />
         <Route path="/Profile" element={<ProfilePage/>} />
-
-        <Route path="/History" element={<History/>} />
-        <Route path="/Record" element={<Record/>} />
       </Routes>
     </Router>
   );
