@@ -654,6 +654,7 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
                     </Dialog>
                     </CardActions>
                 </Card>
+                <h1>Payment History</h1>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
