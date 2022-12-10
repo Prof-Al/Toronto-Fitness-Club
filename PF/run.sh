@@ -1,2 +1,2 @@
 #!/bin/sh
-./PB/manage.py runserver
+./PB.sh & ./PF.sh
