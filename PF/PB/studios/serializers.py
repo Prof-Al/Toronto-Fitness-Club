@@ -20,7 +20,7 @@ class TimeSerializer(serializers.ModelSerializer):
     studio_class = ClassSerializer(read_only=True)
     class Meta:
         model = Time
-        fields = ('studio_class', 'date_from', 'date_end', 'capacity')
+        fields = ('id', 'studio_class', 'date_from', 'date_end', 'capacity')
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
