@@ -8,3 +8,6 @@ source "venv/bin/activate"
 pip install -r requirements.txt
 ./PB/manage.py makemigrations
 ./PB/manage.py migrate
+cd pf
+npm install --force
+cd ..
