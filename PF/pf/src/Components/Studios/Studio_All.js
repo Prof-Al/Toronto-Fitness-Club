@@ -1,6 +1,23 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Maps from "../Globalcomponents/Maps";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+
+import {
+    ContainerTable,
+    Inputd,
+    ContainerInput,
+    TableI
+  } from './StudioElement'
+
 const Studios = () => {
     const [studios, setStudios] = useState(null);
     const [params, setParams] = useState({page: 1, name: "", coach: "", amenity: "", quantity: "", lat: "", lng: ""});
@@ -24,10 +41,13 @@ const Studios = () => {
     }, [params])
 
   return (
-      <>
-      <p>Studio Name
-         <input
-            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+    <ContainerTable>
+    
+    <ContainerInput>
+    <Inputd>
+    
+      <TextField id="standard-basic" label="Studio Name" variant="standard" 
+         
             value={preps.name}
             onChange={(event) => {
                 setPreps({
@@ -36,9 +56,11 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /></p>
-      <p>Coach Name
-         <input
+         />
+         </Inputd>
+         <Inputd>
+  
+      <TextField id="standard-basic" label="Coach Name" variant="standard" 
             style={{width: 100, height: 20, fontSize: 18, margin: 4}}
             value={preps.coach}
             onChange={(event) => {
@@ -48,10 +70,12 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /></p>
-      <p>Amenity
-         <input
-            style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+         />
+         </Inputd>
+         <Inputd>
+
+      <TextField id="standard-basic" label="Amenity" variant="standard" 
+    
             value={preps.amenity}
             onChange={(event) => {
                 setPreps({
@@ -60,9 +84,11 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /></p>
-      <p>Quantity
-         <input
+         />
+         </Inputd>
+         <Inputd>
+     
+      <TextField id="standard-basic" label="quantity" variant="standard" 
             style={{width: 100, height: 20, fontSize: 18, margin: 4}}
             value={preps.quantity}
             onChange={(event) => {
@@ -72,9 +98,11 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /></p>
-      <p>Latitude
-         <input
+         />
+         </Inputd>
+         <Inputd>
+
+      <TextField id="standard-basic" label="Latitude" variant="standard" 
             style={{width: 100, height: 20, fontSize: 18, margin: 4}}
             value={preps.lat}
             onChange={(event) => {
@@ -84,9 +112,11 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /></p>
-      <p>Longitude
-         <input
+         />
+         </Inputd>
+         <Inputd>
+
+      <TextField id="standard-basic" label="Longitude" variant="standard" 
             style={{width: 100, height: 20, fontSize: 18, margin: 4}}
             value={preps.lng}
             onChange={(event) => {
@@ -96,8 +126,9 @@ const Studios = () => {
                     page: 1,
                 })
             }}
-         /></p>
-        <button onClick={(event) => {
+         />
+         </Inputd>
+         <Button  color="error"   variant="contained" component="label" onClick={(event) => {
                 setParams({
                     ...params,
                     name: preps.name,
@@ -108,50 +139,71 @@ const Studios = () => {
                     lng: preps.lng,
                     page: 1,
                 })
-            }}>Search!</button>
-          <br/><br/><>{ total }</>
-            <table>
-            <thead>
-            <tr>
-                <th> # </th>
-                <th> id </th>
-                <th> name </th>
-                <th> address </th>
-                <th> Postal Code </th>
-                <th> Details Page </th>
-            </tr>
-            </thead>
-            <tbody>
+            }}>Search!</Button>
+        </ContainerInput>
+        <TableI>
+         
+          <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>id</TableCell>
+              <TableCell align="right">name</TableCell>
+              <TableCell align="right">address</TableCell>
+              <TableCell align="right">Postal Code</TableCell>
+              <TableCell align="right">Details Page</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {studios?.map((studio) => (
-                <tr key={ studio.id }>
-                    <td></td>
-                    <td>{ studio.id }</td>
-                    <td>{ studio.name }</td>
-                    <td>{ studio.address }</td>
-                    <td>{ studio.postal_code }</td>
-                    <td><button onClick={() => routeChange( studio.id )}>
+                <TableRow
+                key={studio.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                    <TableCell component="th" scope="row">
+                  {studio.id}
+                </TableCell>
+                <TableCell align="right">{studio.name}</TableCell>
+                <TableCell align="right">{studio.address}</TableCell>
+                <TableCell align="right">{studio.postal_code }</TableCell>
+                <TableCell align="right">{studio.postal_code}</TableCell>
+                <TableCell align="right"><Button   color="error" variant="outlined"  onClick={() => routeChange( studio.id )}>
                         See Details
-                        </button>
-                    </td>
-                </tr>
+                        </Button></TableCell>
+                
+               
+                  
+                  
+                </TableRow>
             ))}
-            </tbody>
-        </table>
-            <button onClick={() => setParams({
-                ...params,
-                page: Math.max(1, params.page - 1)
-            })} disabled={ params.page === 1 }>
-                prev
-            </button>
-            <>{ params.page }</>
-            <button onClick={() => setParams({
-                ...params,
-                page: Math.min(total, params.page + 1)
-            })} disabled={ params.page === total || total === 0 || studios === null }>
-                next
-            </button>
-          <Maps />
-        </>
+            </TableBody>
+            </Table>
+        </TableContainer>
+        <Button  color="error"   variant="contained" component="label" onClick={() => setParams({
+                  ...params,
+                  page: Math.max(1, params.page - 1)
+              })} disabled={ params.page === 1 }>
+                  prev
+                  </Button>
+              <>{ params.page }</>
+              <Button  color="error"   variant="contained" component="label" onClick={() => setParams({
+                  ...params,
+                  page: Math.min(total, params.page + 1)
+              })} disabled={ params.page === total || total === 1 }>
+                  next
+                  </Button>
+                  <div  style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+                    <Maps />
+                </div>
+        </TableI>
+
+
+         
+        </ContainerTable>
     );
 }
 
