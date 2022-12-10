@@ -69,7 +69,7 @@ const PickDateOfTimes = props => {
     if(idtimes !== undefined && idtimes !== null){
       try {
         fetch(
-          "http://127.0.0.1:8000/studios/class/" + idtimes + "/enroll/", 
+          "http://127.0.0.1:8000/studios/class/times/" + idtimes + "/enroll/", 
           {
             method: "GET",
             headers: {
