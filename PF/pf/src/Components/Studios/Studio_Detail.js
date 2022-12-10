@@ -11,6 +11,7 @@ import {
     NavBtn,
     NavBtnLink,
 } from './StudioElement'
+import Navbar from "../Navbar";
 
 const Studio = () => {
     const { studio_id } = useParams();
@@ -28,7 +29,7 @@ const Studio = () => {
     }, [studio_id])
 
     return (
-        <Container>
+        <Container><Navbar />
             <Containerdiv>
                 <Header>Studio name: { studio.name }</Header>
                 <Contentdiv>

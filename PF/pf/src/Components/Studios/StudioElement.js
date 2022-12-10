@@ -15,7 +15,7 @@ background: linear-gradient(225deg, #ffc93f 0, #ffba41 12.5%, #ffaa43 25%, #ff9a
 export const Containerdiv= styled.div`
 text-align: center;
 margin: auto;
-margin-top:100px;
+margin-top:130px;
 
 display: flex;
 flex-direction: column;
@@ -114,7 +114,7 @@ export const Inputd = styled.div`
 `;
 
 export const ContainerInput = styled.div`
-margin-top:50px;
+margin-top:100px;
 margin-left:50px;
 margin-right:50px;
 display: flex;

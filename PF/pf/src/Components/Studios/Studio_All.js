@@ -17,6 +17,7 @@ import {
     ContainerInput,
     TableI
   } from './StudioElement'
+import Navbar from "../Navbar";
 
 const Studios = () => {
     const [studios, setStudios] = useState(null);
@@ -42,8 +43,9 @@ const Studios = () => {
     }, [params])
 
   return (
+
     <ContainerTable>
-    
+        <Navbar />
     <ContainerInput>
     <Inputd>
     
@@ -201,9 +203,6 @@ const Studios = () => {
                     <Maps />
                 </div>
         </TableI>
-
-
-         
         </ContainerTable>
     );
 }
