@@ -40,6 +40,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import Select from '@mui/material/Select';
+import { MembershipsH1 } from '../../Memberships/MembershipsElements';
 
 function LinkTab(props) {
   return (
@@ -487,16 +488,16 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
                           {data.first_name + " " + data.last_name}
                       </Typography>
                       <Typography variant="body2" color="text.primary">
-                          First Name: {data.first_name}
+                          <b>First Name:</b> {data.first_name}
                       </Typography>
                       <Typography variant="body2" color="text.primary">
-                          Last Name: {data.last_name}
+                      <b>Last Name:</b> {data.last_name}
                       </Typography>
                       <Typography variant="body2" color="text.primary">
-                          Email: {data.email}
+                      <b>Email:</b> {data.email}
                       </Typography>
                       <Typography variant="body2" color="text.primary">
-                          Phone Number: {data.phone}
+                      <b>Phone Number:</b> {data.phone}
                       </Typography>
                       </CardContent>
                   </CardActionArea>
@@ -573,14 +574,14 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
             )}
             {value === 1 && (
               <Box>
-                <Card sx={{ maxWidth: 300, m:10 }}>
+                <Card sx={{ maxWidth: 350, m:10 }}>
                     <CardActionArea>
                         <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Credit Card Information
                         </Typography>
                         <Typography variant="body2" color="text.primary">
-                          Number: {data.card_info}
+                        <b>Credit Card Number:</b> {data.card_info}
                       </Typography>
                         </CardContent>
                     </CardActionArea>
@@ -613,16 +614,15 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
                     </Dialog>
                     </CardActions>
                 </Card>
-
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Transaction ID</TableCell>
-                        <TableCell align="right">Date</TableCell>
-                        <TableCell align="right">Amount</TableCell>
-                        <TableCell align="right">Card Information</TableCell>
-                        <TableCell align="right">Recurrence</TableCell>
+                        <TableCell><b>Transaction ID</b></TableCell>
+                        <TableCell align="right"><b>Date</b></TableCell>
+                        <TableCell align="right"><b>Amount</b></TableCell>
+                        <TableCell align="right"><b>Card Information</b></TableCell>
+                        <TableCell align="right"><b>Recurrence</b></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
