@@ -17,7 +17,7 @@ const Studio = () => {
     const { studio_id } = useParams();
     const [studio, setStudio] =
         useState({address: "", id: "", name: "",
-            phone_number: "", postal_code: "", latitude: "", longitude: "", description:""});
+            phone_number: "", postal_code: "", latitude: "", longitude: ""});
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/studios/detail/${studio_id}/`)
@@ -56,10 +56,7 @@ const Studio = () => {
                     <Content>Location  longitude: </Content>
                     <Content>{ studio.longitude}</Content>
                 </Contentdiv>
-                <Contentdiv>
-                    <Content>Description: </Content>
-                    <Content>{ studio.description}</Content>
-                </Contentdiv>
+          
                 <Contentdiv>
                 <NavBtn>
                     <NavBtnLink to={'/Date/' + studio.id}>See All Classes</NavBtnLink>
