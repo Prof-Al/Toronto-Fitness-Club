@@ -50,7 +50,7 @@ const Memberships = () => {
                                         </MembershipsCard>)
 
     return (
-        <MembershipsContainer id='memberships'>
+        <MembershipsContainer id='subscriptions'>
             <MembershipsH1>Flexible plans to fit your lifestyle</MembershipsH1>
             <NavBtn>
                 <NavBtnLink to='/profile'>Add/Manage Subscriptions</NavBtnLink>

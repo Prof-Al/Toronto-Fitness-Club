@@ -56,6 +56,7 @@ function LinkTab(props) {
 export default function ProfilePage() {
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+  const [cancel_open, setCancelOpen] = React.useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [profile, setProfile] = useState([]);
   const [data, setData] = useState([]);
@@ -115,8 +116,17 @@ export default function ProfilePage() {
     setOpen(true);
   };
 
+  const handleCancelClickOpen = () => {
+    setCancelOpen(true);
+  };
+
   const handleClose = () => {
     setOpen(false);
+    setMessage()
+  };
+
+  const handleCancelClose = () => {
+    setCancelOpen(false);
     setMessage()
   };
 
@@ -249,6 +259,9 @@ useEffect(() => {
     handleClose()
   }; 
 
+  const success_cancel = async (text)=> {
+    handleCancelClose()
+  }; 
 
   const update_profile_api = async (email, first_name, last_name, phone, avatar, success, fail) => {
     var data = new FormData();
@@ -405,6 +418,42 @@ const tryUpdateSubscription = async (e) => {
   e.preventDefault();
   console.log("Updating subscription");
   await update_subscription_api(temp_subscription, success, (text)=>{setMessage(text)});
+};
+
+
+const cancel_subscription_api = async (success, fail) => {
+
+  const response = await fetch(
+        "http://127.0.0.1:8000/accounts/cancel_subscription/",
+        {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "confirm": "confirm"
+            })
+        }
+    );
+  const text = await response.text();
+  if (response.status === 200) {
+    setBillingCard(new Date)
+    setProfile(new Date)
+    success_cancel(JSON.parse(text));
+  } else {
+    console.log("fail", text);
+    Object.entries(JSON.parse(text)).forEach(([key, value])=>{
+      fail(`${key}: ${value}`);
+    });
+  }
+};
+
+const tryCancelSubscription = async (e) => {
+  e.preventDefault();
+  console.log("Canceling subscription");
+  await cancel_subscription_api(success_cancel, (text)=>{setMessage(text)});
 };
 
 
@@ -722,6 +771,21 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
                         <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
                         <Button onClick={tryUpdateSubscription}>Save</Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Button onClick={handleCancelClickOpen} size="small" color="primary">
+                        Cancel
+                      </Button>
+                      <Dialog open={cancel_open} onClose={handleCancelClose}>
+                        <DialogTitle>Cancel Subscription</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText>
+                            Are you sure you want to cancel your current subscription plan? You may use your subscription until the end of your billing period.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleCancelClose}>No</Button>
+                        <Button onClick={tryCancelSubscription}>Yes</Button>
                         </DialogActions>
                     </Dialog>
                     </CardActions>

@@ -18,6 +18,7 @@ import {
     DropDownContent,
 
 } from './NavbarElements';
+import { HashLink, HashLink as Link } from 'react-router-hash-link'
 
 const Navbar = ({ toggle }) => {
     const [scrollNav, setScrollNav] = useState(false);
@@ -64,7 +65,7 @@ const Navbar = ({ toggle }) => {
                         <NavMenu>
                             <NavItem>
                                 <NavLinks
-                                    to='about'
+                                    to='/#about'
                                     smooth={true}
                                     duration={500}
                                     spy={true}
@@ -74,7 +75,7 @@ const Navbar = ({ toggle }) => {
                             </NavItem>
 
                             <NavItem>
-                                <NavLinks to='Studios'
+                                <NavLinks to='/#Studios'
                                 smooth={true}
                                 duration={500}
                                 spy={true}
@@ -83,7 +84,7 @@ const Navbar = ({ toggle }) => {
                             </NavItem>
 
                             <NavItem>
-                                <NavLinks to='memberships'
+                                <NavLinks to='/#subscriptions'
                                 smooth={true}
                                 duration={500}
                                 spy={true}

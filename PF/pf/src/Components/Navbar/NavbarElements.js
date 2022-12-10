@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Link as LinkR } from 'react-router-dom'
 import { Link as LinkS} from 'react-scroll'
+import { HashLink } from 'react-router-hash-link'
 
 export const Nav = styled.nav`
     background: ${({scrollNav})=> (scrollNav ? '#010606' : 'black')};
@@ -69,7 +70,7 @@ export const NavMenu = styled.ul`
 export const NavItem = styled.li`
     height: 80px;
 `
-export const NavLinks = styled(LinkS)`
+export const NavLinks = styled(HashLink)`
     color: #fff;
     display: flex;
     align-items: center;
