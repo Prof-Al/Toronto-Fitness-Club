@@ -87,7 +87,7 @@ const PickDateOfClass = props => {
             navigate("/error_enroll")
           }
           else if(res.status == 200){
-            navigate("/Record")
+            navigate("/Profile")
           };
 
 
