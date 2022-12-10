@@ -95,7 +95,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const getProfiles = async () => {
-          let response = await fetch('http://127.0.0.1:8000/accounts/profile', {
+          let response = await fetch('http://127.0.0.1:8000/accounts/profile/', {
               method: "GET",
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
