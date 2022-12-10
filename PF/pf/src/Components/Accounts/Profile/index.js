@@ -38,9 +38,11 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import ArticleIcon from '@mui/icons-material/Article';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import Select from '@mui/material/Select';
 import { MembershipsH1 } from '../../Memberships/MembershipsElements';
+import {navigate} from "@progress/kendo-react-buttons/dist/es/ListButton/utils/navigation";
 
 function LinkTab(props) {
   return (
@@ -83,6 +85,10 @@ export default function ProfilePage() {
 
   const [sub_data, setSubData] = useState([]);
 
+  const [recordHistory, setRecordHistory] = useState(null);
+  const [recordUpcoming, setRecordUpcoming] = useState(null);
+  const [dropClass, setDropClass] = useState(null);
+
     useEffect(() => {
         const getSubscriptions = async () => {
               let response = await fetch('http://127.0.0.1:8000/accounts/subscriptions/', {
@@ -93,6 +99,39 @@ export default function ProfilePage() {
         }
         getSubscriptions();
     }, [subscription])
+
+    useEffect(() => {
+        const getRecords = async () => {
+              fetch('http://127.0.0.1:8000/accounts/time/upcoming/', {
+                  method: "GET",
+                  headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                }
+              }).then(res => res.json()).then(json => {setRecordUpcoming(json)})
+
+             fetch('http://127.0.0.1:8000/accounts/time/history/', {
+                  method: "GET",
+                  headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                }
+              }).then(res => res.json()).then(json => {setRecordHistory(json)})
+        }
+        getRecords();
+    }, [subscription])
+
+  useEffect(() => {
+    if(dropClass !== undefined && dropClass !== null){
+        fetch("http://127.0.0.1:8000/studios/class/times/" + dropClass + "/drop/",
+          { method: "GET",
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,},}
+        ).then(res => {
+          if(res.status === 401){ navigate("/error_enroll") }
+          else if(res.status === 200){ navigate("/profile") }
+        });
+    }
+  }, [dropClass])
+
 
   useEffect(() => {
     const getProfiles = async () => {
@@ -471,6 +510,7 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
           <Tab icon={<AccountCircleIcon />} label="Overview" />
           <Tab icon={<CreditCardIcon />} label="Billing" />
           <Tab icon={<FitnessCenterIcon />} label="Subscription" />
+          <Tab icon={<ArticleIcon />} label="Records" />
         </Tabs>
         <Box>
             {value === 0 && (
@@ -792,6 +832,116 @@ var all_subs_dropdown = sub_data.map(item => <MenuItem value={item.name}>{item.n
                 </Card>
                   </Fragment>
                 )}
+              </Box>
+            )}
+            {value === 3 && (
+              <Box>
+                  <h1>Oncoming Schedules</h1>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Class Number</TableCell>
+                        <TableCell align="center">Start Time</TableCell>
+                        <TableCell align="center">End Time</TableCell>
+                        <TableCell align="center">Drop Class</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {(rowsPerPage > 0
+                        ?recordUpcoming.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : recordUpcoming
+                         ).map((row) => (
+                        <TableRow
+                          key={row.id}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row" align="center">
+                            {row.studio_class_id}
+                          </TableCell>
+                          <TableCell align="center">{row.date_from}</TableCell>
+                          <TableCell align="center">{row.date_end}</TableCell>
+                          <TableCell align="center"><Button onClick={() => {
+                              setDropClass(row.id)
+                              window.location.reload(false)
+                          }}
+                          >Drop</Button></TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+
+                    <TableFooter>
+                      <TableRow>
+                        <TablePagination
+                          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                          colSpan={4}
+                          count={recordUpcoming.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          SelectProps={{
+                            inputProps: {
+                              'aria-label': 'rows per page',
+                            },
+                            native: true,
+                          }}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          ActionsComponent={TablePaginationActions}
+                        />
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                </TableContainer>
+                <br/><h1>Past Records</h1>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Class Number</TableCell>
+                        <TableCell align="center">Start Time</TableCell>
+                        <TableCell align="center">End Time</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {(rowsPerPage > 0
+                        ?recordHistory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : recordHistory
+                         ).map((row) => (
+                        <TableRow
+                          key={row.id}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row" align="center">
+                            {row.studio_class_id}
+                          </TableCell>
+                          <TableCell align="center">{row.date_from}</TableCell>
+                          <TableCell align="center">{row.date_end}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+
+                    <TableFooter>
+                      <TableRow>
+                        <TablePagination
+                          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                          colSpan={3}
+                          count={recordHistory.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          SelectProps={{
+                            inputProps: {
+                              'aria-label': 'rows per page',
+                            },
+                            native: true,
+                          }}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          ActionsComponent={TablePaginationActions}
+                        />
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                </TableContainer>
               </Box>
             )}
           </Box>
