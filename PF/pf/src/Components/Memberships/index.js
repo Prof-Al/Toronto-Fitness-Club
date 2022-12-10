@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon1 from '../../images/icon-1.svg';
-import Icon2 from '../../images/icon-2.svg';
-import Icon3 from '../../images/icon-3.svg';
+// import Icon2 from '../../images/icon-2.svg';
+// import Icon3 from '../../images/icon-3.svg';
 
 import { useEffect, useState } from 'react';
 import {
@@ -30,24 +30,24 @@ const Memberships = () => {
                   method: "GET",
               })
               let data = await response.json()
-              console.log(data.results)
+              // console.log(data.results)
               setSubData(data.results)
         }
         getSubscriptions();
     }, [subscription])
-    
 
-    var renderedOutput = sub_data.map(item => <MembershipsCard>
-                                            <MembershipsIcon src={Icon1} />
-                                            <MembershipsH2>{ item.name }</MembershipsH2>
-                                            <MembershipsChecks>
-                                            <MembershipsP>< CheckMark/>Access to 20+ studios</MembershipsP>
-                                            <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
-                                            <MembershipsP>< CheckMark/>Access to professional coaches</MembershipsP>
-                                            <MembershipsP>< CheckMark/>Access to a wide array of classes</MembershipsP>
-                                            </MembershipsChecks>
-                                            <MembershipsH2><DollarSign />{ item.amount } { item.duration }</MembershipsH2>
-                                        </MembershipsCard>)
+
+    const renderedOutput = sub_data.map(item => <MembershipsCard key={ item.name }>
+        <MembershipsIcon src={Icon1}/>
+        <MembershipsH2>{item.name}</MembershipsH2>
+        <MembershipsChecks>
+            <MembershipsP>< CheckMark/>Access to 20+ studios</MembershipsP>
+            <MembershipsP>< CheckMark/>24/7 Gym access</MembershipsP>
+            <MembershipsP>< CheckMark/>Access to professional coaches</MembershipsP>
+            <MembershipsP>< CheckMark/>Access to a wide array of classes</MembershipsP>
+        </MembershipsChecks>
+        <MembershipsH2><DollarSign/>{item.amount} {item.duration}</MembershipsH2>
+    </MembershipsCard>);
 
     return (
         <MembershipsContainer id='subscriptions'>
@@ -57,7 +57,6 @@ const Memberships = () => {
             </NavBtn>
             <MembershipsWrapper>
                 {renderedOutput}
-
             </MembershipsWrapper>
         </MembershipsContainer>
 
