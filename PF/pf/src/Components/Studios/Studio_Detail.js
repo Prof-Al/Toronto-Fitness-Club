@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
+
+import {
+    Container,
+    Containerdiv,
+    Header,
+    Content,
+    Contentdiv,
+    NavBtn,
+    NavBtnLink,
+} from './StudioElement'
+
 const Studio = () => {
     const { studio_id } = useParams();
     const [studio, setStudio] =
         useState({address: "", id: "", name: "",
-            phone_number: "", postal_code: "", latitude: "", longitude: ""});
+            phone_number: "", postal_code: "", latitude: "", longitude: "", description:""});
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/studios/detail/${studio_id}/`)
@@ -17,15 +28,50 @@ const Studio = () => {
     }, [studio_id])
 
     return (
-        <div>
-            <h1>{ studio_id }</h1>
-            <p>{ studio.name }</p>
-            <p>{ studio.address }</p>
-            <p>{ studio.phone_number }</p>
-            <p>{ studio.postal_code }</p>
-            <p>{ studio.latitude }</p>
-            <p>{ studio.longitude }</p>
-        </div>
+        <Container>
+            <Containerdiv>
+                <Header>Studio name: { studio.name }</Header>
+                <Contentdiv>
+                    <Content>Studio id: </Content>
+                    <Content>{ studio.id}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                    <Content>Studio address: </Content>
+                    <Content>{ studio.address}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                    <Content>Phone number: </Content>
+                    <Content>{ studio.phone_number}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                    <Content>Postal Code: </Content>
+                    <Content>{studio.postal_code}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                    <Content>Location latitude: </Content>
+                    <Content>{ studio.latitude}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                    <Content>Location  longitude: </Content>
+                    <Content>{ studio.longitude}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                    <Content>Description: </Content>
+                    <Content>{ studio.description}</Content>
+                </Contentdiv>
+                <Contentdiv>
+                <NavBtn>
+                    <NavBtnLink to={'/Date/' + studio.id}>See All Classes</NavBtnLink>
+                </NavBtn>
+                <NavBtn>
+                    <NavBtnLink to={'/Time/' + studio.id}>See All Classes Schedules</NavBtnLink>
+                </NavBtn>
+                </Contentdiv>
+
+                
+
+            </Containerdiv>
+        </Container>
     );
 }
 

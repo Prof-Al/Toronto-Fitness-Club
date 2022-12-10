@@ -68,13 +68,11 @@ const PickDateOfClass = props => {
         fetch(
           "http://127.0.0.1:8000/studios/class/" + idclasses + "/enroll/"
         ).then(res => {
-          if(!res.ok){
-            if(res.status){
-              navigate("/error_enroll")
-            }
-
-          } 
-          else{
+          console.log(res.status)
+          if(res.status == 401){
+            navigate("/error_enroll")
+          }
+          else if(res.status == 200){
             navigate("/success_enroll")
           };
 

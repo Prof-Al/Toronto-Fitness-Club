@@ -64,19 +64,18 @@ const PickDateOfTimes = props => {
     console.log(idtimes)
     if(idtimes !== undefined && idtimes !== null){
       try {
-        console.log("http://127.0.0.1:8000/studios/class/" + idtimes + "/enroll/")
+       
         fetch(
           "http://127.0.0.1:8000/studios/class/" + idtimes + "/enroll/"
         ).then(res => {
-          if(!res.ok){
-            if(res.status){
+            console.log(res.status)
+            console.log(res)
+            if(res.status == 401){
               navigate("/error_enroll")
             }
-
-          } 
-          else{
-            navigate("/success_enroll")
-          };
+            else if(res.status == 200){
+                navigate("/success_enroll")
+            };
 
 
         });
