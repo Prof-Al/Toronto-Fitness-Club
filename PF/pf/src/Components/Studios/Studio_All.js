@@ -1,10 +1,17 @@
 import React, {useEffect, useState} from "react";
-
+import { useNavigate } from "react-router-dom";
+import Maps from "../Globalcomponents/Maps";
 const Studios = () => {
     const [studios, setStudios] = useState(null);
     const [params, setParams] = useState({page: 1, name: "", coach: "", amenity: "", quantity: "", lat: "", lng: ""});
     const [preps, setPreps] = useState({page: 1, name: "", coach: "", amenity: "", quantity: "", lat: "", lng: ""});
     const [total, setTotal] = useState(1);
+
+    let navigate = useNavigate();
+    function routeChange(id) {
+        let path = `../studio/` + id;
+        navigate(path);
+    }
 
     useEffect(() => {
         const { page, name, coach, amenity, quantity, lat, lng } = params;
@@ -110,7 +117,8 @@ const Studios = () => {
                 <th> id </th>
                 <th> name </th>
                 <th> address </th>
-                <th> postal_cde </th>
+                <th> Postal Code </th>
+                <th> Details Page </th>
             </tr>
             </thead>
             <tbody>
@@ -121,6 +129,10 @@ const Studios = () => {
                     <td>{ studio.name }</td>
                     <td>{ studio.address }</td>
                     <td>{ studio.postal_code }</td>
+                    <td><button onClick={() => routeChange( studio.id )}>
+                        See Details
+                        </button>
+                    </td>
                 </tr>
             ))}
             </tbody>
@@ -138,6 +150,7 @@ const Studios = () => {
             })} disabled={ params.page === total || total === 0 }>
                 next
             </button>
+          <Maps />
         </>
     );
 }
