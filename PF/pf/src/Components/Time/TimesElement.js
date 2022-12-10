@@ -27,7 +27,7 @@ margin-top:30px;
 `;
 
 export const ContainerInput = styled.div`
-margin-top:50px;
+margin-top:100px;
 margin-left:50px;
 margin-right:50px;
 display: flex;

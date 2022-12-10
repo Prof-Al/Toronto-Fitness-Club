@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import {useParams} from "react-router-dom";
 import TextField from '@mui/material/TextField';
+import Navbar from "../Navbar";
 
 import {
   Container,
@@ -109,6 +110,7 @@ const PickDateOfClass = props => {
 
   return (
     <Container className="Select_date">
+        <Navbar/>
       <ContainerInput>
       <div>
         <Inputd>
