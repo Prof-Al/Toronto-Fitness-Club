@@ -14,7 +14,7 @@ import RegisterPage from './Components/Accounts/Register';
 import LoginPage from './Components/Accounts/Login';
 import ProfilePage from './Components/Accounts/Profile';
 import Enroll_error from './Components/Intermediate/enroll_error';
-import PickDateOfTimes from './Components/Time/Calendar'
+import TimeSearch from './Components/Time/index'
 function App() {
 
   const [token, setToken] = useState();
@@ -30,7 +30,7 @@ function App() {
         <Route path="/Studio/:studio_id" element={<Studio />} />
 
         <Route path="/Date/:studio_id" element={<PickDateOfClass/>} />
-        <Route path="/Time/:studio_id" element={<PickDateOfTimes/>} />
+        <Route path="/Time/:studio_id" element={<TimeSearch/>} />
         <Route path="/error_enroll" element={<Enroll_error/>} />
 
         <Route path="/Signup" element={<RegisterPage/>} />

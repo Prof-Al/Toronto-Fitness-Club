@@ -11,11 +11,18 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import {useParams} from "react-router-dom";
+import TextField from '@mui/material/TextField';
 
 import {
   Container,
   Calendardiv,
+  Inputd,
+  ContainerInput,
+  TableI,
+  Div1,
+  ButtonM,
 } from './ClassesElement'
+import { style } from "@mui/system";
 
 const PickDateOfClass = props => {
   const { studio_id } = useParams();
@@ -66,14 +73,21 @@ const PickDateOfClass = props => {
       try {
         console.log("http://127.0.0.1:8000/studios/class/" + idclasses + "/enroll/")
         fetch(
-          "http://127.0.0.1:8000/studios/class/" + idclasses + "/enroll/"
+          "http://127.0.0.1:8000/studios/class/" + idclasses + "/enroll/",
+          {
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },      
+          }
         ).then(res => {
+          
           console.log(res.status)
           if(res.status == 401){
             navigate("/error_enroll")
           }
           else if(res.status == 200){
-            navigate("/success_enroll")
+            navigate("/Record")
           };
 
 
@@ -94,10 +108,11 @@ const PickDateOfClass = props => {
 
   return (
     <Container className="Select_date">
+      <ContainerInput>
       <div>
-        <p>Studio Name
-          <input
-              style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+        <Inputd>
+        <p>Studio Name</p>
+        <TextField id="standard-basic" label="Class Name" variant="standard" 
               value={preps.name}
               onChange={(event) => {
                   setPreps({
@@ -106,10 +121,12 @@ const PickDateOfClass = props => {
                       page: 1,
                   })
               }}
-          /></p>
-          <p>Coach Name
-          <input
-              style={{width: 100, height: 20, fontSize: 18, margin: 4}}
+          />
+          </Inputd>
+          <Inputd>
+          <p>Coach Name</p>
+          <TextField id="standard-basic" label="Coach Name" variant="standard" 
+    
               value={preps.coach}
               onChange={(event) => {
                   setPreps({
@@ -118,9 +135,11 @@ const PickDateOfClass = props => {
                       page: 1,
                   })
               }}
-          /></p>
-          <p>Date duration (smaller than)
-          <input
+          />
+          </Inputd>
+          <Inputd>
+          <p>Date duration (smaller than)</p>
+          <TextField id="standard-basic" label="20" variant="standard" 
               style={{width: 100, height: 20, fontSize: 18, margin: 4}}
               value={preps.range_smaller}
               onChange={(event) => {
@@ -130,9 +149,11 @@ const PickDateOfClass = props => {
                       page: 1,
                   })
               }}
-          /></p>
-          <p>Date duration (greater than)
-          <input
+          />
+          </Inputd>
+          <Inputd>
+          <p>Date duration (greater than)</p>
+          <TextField id="standard-basic" label="20" variant="standard" 
               style={{width: 100, height: 20, fontSize: 18, margin: 4}}
               value={preps.range_greater}
               onChange={(event) => {
@@ -142,14 +163,15 @@ const PickDateOfClass = props => {
                       page: 1,
                   })
               }}
-          /></p>
+          />
+          </Inputd>
           
       </div>
      
 
-      
-      <Calendardiv>
-        <div>
+      <Div1>
+     
+      <div style={{ marginLeft: '40px' }}>
         <div>Select Start Date to see available classes</div>
         <Calendar value={date} onChange={e =>{
           setDate(e.value)
@@ -161,7 +183,7 @@ const PickDateOfClass = props => {
         }} />
         <div className="select_s">Selected date: {date?.toDateString()}</div>
         </div>
-        <div>
+        <div style={{ marginLeft: '40px' }}>
         <div>Select end Date to see available classes</div>
         <Calendar value={date2} onChange={e =>{
           setDate2(e.value)
@@ -173,9 +195,10 @@ const PickDateOfClass = props => {
         }} />
         <div className="select_s">Selected date: {date2?.toDateString()}</div>
         </div>
-      </Calendardiv>
+     </Div1>
       <div className="Calendar">
-      <Button onClick={(event) => {
+      <ButtonM>
+      <Button color="error"   variant="contained" component="label" onClick={(event) => {
                 setParams({
                     ...params,
                     name: preps.name,
@@ -187,7 +210,10 @@ const PickDateOfClass = props => {
                     page: 1,
                 })
             }}>Search!</Button>
-      <Button onClick={(event) => {
+          </ButtonM>
+          <ButtonM>
+      <Button color="error"   variant="contained" component="label" onClick={(event) => {
+                
                 setParams({
                     ...params,
                     name: "",
@@ -201,7 +227,12 @@ const PickDateOfClass = props => {
                 setDate(null)
                 setDate2(null)
             }}>Reset!</Button>
+            </ButtonM>
       </div>
+     
+      </ContainerInput>
+
+      <TableI>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -243,21 +274,22 @@ const PickDateOfClass = props => {
         </Table>
       </TableContainer>
       <table>
-        <button onClick={() => setParams({
+      <Button  color="error"   variant="contained" component="label" onClick={() => setParams({
                   ...params,
                   page: Math.max(1, params.page - 1)
               })} disabled={ params.page === 1 }>
                   prev
-              </button>
+                  </Button>
               <>{ params.page }</>
-              <button onClick={() => setParams({
+              <Button  color="error"   variant="contained" component="label" onClick={() => setParams({
                   ...params,
                   page: Math.min(total, params.page + 1)
               })} disabled={ params.page === total || total === 1 }>
                   next
-        </button>
+                  </Button>
         
       </table>
+      </TableI>
     </Container>
 
 
