@@ -52,7 +52,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=12)
-    avatar = models.ImageField(upload_to='images/', default='default.jpg')
+    avatar = models.ImageField(upload_to='images/', default='images/default.jpg')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_subscribed = models.BooleanField(default=False)

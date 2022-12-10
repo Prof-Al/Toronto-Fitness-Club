@@ -104,7 +104,10 @@ class ListPaymentHistoryView(ListAPIView):
         user = request.user
         payment_history = list(PaymentTransaction.objects.filter(user=user).values())
         print(payment_history)
-        amount = user.subscription.amount
+        if user.subscription is None:
+            amount = None
+        else:
+            amount = user.subscription.amount
         plan = None
         if user.is_subscribed:
             if str(user.subscription.duration) == "Monthly":
