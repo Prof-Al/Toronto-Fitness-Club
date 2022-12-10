@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import Maps from "../Globalcomponents/Maps";
-const Studios = () => {
+const History = () => {
     const [studios, setStudios] = useState(null);
     const [params, setParams] = useState({page: 1, name: "", coach: "", amenity: "", quantity: "", lat: "", lng: ""});
     const [preps, setPreps] = useState({page: 1, name: "", coach: "", amenity: "", quantity: "", lat: "", lng: ""});
@@ -147,13 +146,12 @@ const Studios = () => {
             <button onClick={() => setParams({
                 ...params,
                 page: Math.min(total, params.page + 1)
-            })} disabled={ params.page === total || total === 0 || studios === null }>
+            })} disabled={ params.page === total || total === 0 }>
                 next
             </button>
-          <Maps />
         </>
     );
 }
 
-export default Studios;
+export default History;
 // comment

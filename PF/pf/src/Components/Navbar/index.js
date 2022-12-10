@@ -37,9 +37,9 @@ const Navbar = ({ toggle }) => {
     }, []);
 
     useEffect(() => {
-        console.log(localStorage.getItem('token'))
+        // console.log(localStorage.getItem('token'))
         if (localStorage.getItem('token') !== null) {
-            console.log("authenticated now")
+            // console.log("authenticated now")
             setIsAuth(true);
         }
       }, [isAuth]);
@@ -66,9 +66,9 @@ const Navbar = ({ toggle }) => {
                             <NavItem>
                                 <NavLinks
                                     to='/#about'
-                                    smooth={true}
+                                    smooth='true'
                                     duration={500}
-                                    spy={true}
+                                    spy='true'
                                     exact='true'
                                     offset={-80}>
                                     About</NavLinks>
@@ -76,18 +76,18 @@ const Navbar = ({ toggle }) => {
 
                             <NavItem>
                                 <NavLinks to='/#Studios'
-                                smooth={true}
+                                smooth='true'
                                 duration={500}
-                                spy={true}
+                                spy='true'
                                 exact='true'
                                 offset={-80}>Studios</NavLinks>
                             </NavItem>
 
                             <NavItem>
                                 <NavLinks to='/#subscriptions'
-                                smooth={true}
+                                smooth='true'
                                 duration={500}
-                                spy={true}
+                                spy='true'
                                 exact='true'
                                 offset={-80}>Subscriptions</NavLinks>
                             </NavItem>

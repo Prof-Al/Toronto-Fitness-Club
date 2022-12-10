@@ -14,13 +14,10 @@ const Main = () => {
     
         return (
             <>
-
                 <Navbar toggle={toggle} />
                 <InfoSection {...homeObjOne}/>
                 <InfoSection {...homeObjTwo}/>
                 <Memberships />
-               
-                
             </>
         );
 };
